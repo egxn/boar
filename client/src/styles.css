@@ -1,0 +1,77 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+input[type="text"] {
+  border: none;
+  border-radius: 0;
+  font-size: 20px;
+  height: 28px;
+  padding-left: 8px;
+}
+
+.boar {
+  background-color: black;
+  height: 100vh;
+  margin: 0;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.btns {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 24px;
+}
+
+.key {
+  align-items: center;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  font-size: 32px;
+  height: 80px;
+  justify-content: center;
+  margin: 8px;
+  min-height: 80px;
+  min-width: 80px;
+  width: fit-content;
+}
+
+.modal-new-key {
+  background-color: #0d1117;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 40px);
+  left: 0;
+  margin: 20px;
+  outline: 4px solid #f78166;
+  position: absolute;
+  top: 0;
+  width: calc(100% - 40px);
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  width: calc(100% - 40px);
+}
+
+label {
+  width: 120px;
+}
+
+#command, #idApp, #label {
+  width: calc(100% - 130px);
+}
+
+.save-n-close {
+  justify-content: space-around;
+}
