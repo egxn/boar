@@ -6,9 +6,9 @@ Create a keyboard with custom shortcuts that you can use as:
 
 * 📡 Streaming proposes 
 * 🙂 Emoji keyboard 
-* 🔔 Midi controller
 * 🎨 Shortcuts for apps (like GIMP)
-* 🔲 Digital macro pad
+* 🔲 Touch macro pad
+* 🔔 Touch midi controller
 * ❇️ And more
 
 ## Dependencies
@@ -34,4 +34,4 @@ Create a keyboard with custom shortcuts that you can use as:
 | `cargo build_client` | To build the client  |
 
 
-Build with Rust 🦀 and TypeScript 🔷 
+Built with Rust 🦀 and TypeScript 🔷 
