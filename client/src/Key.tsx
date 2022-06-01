@@ -7,9 +7,10 @@ export interface KeyInterface {
   command: string;
   idApp?: string;
   label: string;
+  kind: string;
 }
 
-function Key({ background, border, command, label }: KeyInterface) {
+function Key({ background, border, command, kind, label }: KeyInterface) {
   const [borderColor, setBorderColor] = useState(border);
   const BORDER_OK = "#00ff00";
   const BORDER_ERROR = "#ff0000";
@@ -20,9 +21,9 @@ function Key({ background, border, command, label }: KeyInterface) {
     }
   });
 
-  const pushKey = async () => {
+  const pushKey = async (kind: string) => {
     const url = window.location.host;
-    const res = await fetch(`http://${url}/grunt?keys=${command}`);
+    const res = await fetch(`http://${url}/grunt?${kind}=${command}`);
     if (res.status === 200) {
       setBorderColor(BORDER_OK);
     } else {
@@ -33,7 +34,7 @@ function Key({ background, border, command, label }: KeyInterface) {
   return (
     <div 
       className="key" 
-      onClick={pushKey}
+      onClick={() => pushKey(kind)}
       role="button"
       style={{
         background: `${background}`,
