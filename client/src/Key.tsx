@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
-import type { KeyInterface } from "./types";
 import './styles.css';
 
+export interface KeyInterface {
+  background: string;
+  border: string;
+  command: string;
+  idApp?: string;
+  label: string;
+}
 
-function Key({ background, border, command, label, omitEvent }: KeyInterface) {
+function Key({ background, border, command, label }: KeyInterface) {
   const [borderColor, setBorderColor] = useState(border);
   const BORDER_OK = "#00ff00";
   const BORDER_ERROR = "#ff0000";
@@ -15,14 +21,12 @@ function Key({ background, border, command, label, omitEvent }: KeyInterface) {
   });
 
   const pushKey = async () => {
-    if (!omitEvent) {
-      const url = window.location.host;
-      const res = await fetch(`http://${url}/grunt?keys=${command}`);
-      if (res.status === 200) {
-        setBorderColor(BORDER_OK);
-      } else {
-        setBorderColor(BORDER_ERROR);
-      }
+    const url = window.location.host;
+    const res = await fetch(`http://${url}/grunt?keys=${command}`);
+    if (res.status === 200) {
+      setBorderColor(BORDER_OK);
+    } else {
+      setBorderColor(BORDER_ERROR);
     }
   }
 

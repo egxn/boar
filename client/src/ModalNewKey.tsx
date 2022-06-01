@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import  { KeyInterface } from "./types";
+import { KeyInterface } from "./Key";
 import './styles.css';
 
 interface ModalNewKeyProps {
@@ -76,12 +76,8 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
         />
       </div>
       <div className="row save-n-close">
-        <div className="key" onClick={onClose}> 
-          ❌
-        </div>
-        <div className="key" onClick={saveKey}> 
-          💾
-        </div>
+        <div className="key" onClick={onClose} role="button">❌</div>
+        <div className="key" onClick={saveKey} role="button">💾</div>
       </div>
     </div>
   );

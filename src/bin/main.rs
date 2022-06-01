@@ -108,7 +108,7 @@ async fn main() {
   let url = format!("http://{}:{}", &ip.to_string(), port);
   let qr = QrCode::encode_text(&url, QrCodeEcc::Medium).unwrap();
 
-  println!("Boar 🐗 running on {}:{}", &ip.to_string(), port);
+  println!("Boar 🐗 running on http://{}:{}", &ip.to_string(), port);
   print_qr(&qr);
 
   if let Err(e) = server.await {
