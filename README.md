@@ -30,6 +30,7 @@ This is a 🦀 Rust app as webserver and a ⚛️ React app as web application o
 ## Setup
 
 > cd client && yarn 
+
 > yarn build && cd ..
 
 | Command | Description |
