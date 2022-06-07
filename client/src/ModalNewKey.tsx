@@ -8,7 +8,7 @@ interface ModalNewKeyProps {
 };
 
 function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
-  const [kind, setKind] = useState('keys');
+  const [kind, setKind] = useState('key');
   const [newKey, setNewKey] = useState<KeyInterface>({
     command: "",
     label: "",
@@ -31,10 +31,9 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
   }
 
   const toggleKind = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, checked } = event.target;
-    if (checked) {
-      setNewKey({ ...newKey, kind: id });
-    }
+    const { id } = event.target;
+    console.log("Toggle kind", id);
+    setKind(id);
   }
 
   return (
@@ -53,9 +52,9 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
       <div className="row" >
         <label htmlFor="keys"> Kind</label>
         <label htmlFor="keys"> Keys</label>
-        <input id="keys" onChange={() => setKind("keys")} name="kind" type="radio" value="keys" checked={kind === "keys"} />
-        <label htmlFor="keys"> Type</label>
-        <input id="type" onChange={() => setKind("kind")} name="kind" type="radio" value="type" checked={kind === "type"}/>
+        <input id="keys" onChange={toggleKind} name="kind" type="radio" value="key" checked={kind === "key"} />
+        <label htmlFor="type"> Type</label>
+        <input id="type" onChange={toggleKind} name="kind" type="radio" value="type" checked={kind === "type"}/>
       </div>
       <div className="row">
         <label htmlFor="background">Background</label>

@@ -2,7 +2,7 @@ import emojis from './presets/emojis.json';
 import Key, { KeyInterface } from './Key';
 import ModalNewKey from './ModalNewKey';
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 const PRESETS = [emojis];
@@ -25,6 +25,7 @@ function App() {
   useEffect(() => {
     const storedKeys = JSON.parse(localStorage.getItem('keys') || '[]');
     setKeys([...storedKeys, ...keys]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addPreset = (preset: {
@@ -43,12 +44,12 @@ function App() {
   return (
     <div className='boar'>
       <div className='btns'>
-        {keys.map((key, index) => <Key key={index} {...key} />)}
+        {keys.map((key, index) => <Key key={`${index}-${key.label}`} {...key} />)}
       </div>
       {!showModalNewKey && <div className='btn-bar'>
         <div className='btn-sm' onClick={openModalNewKey}> + </div>
         {PRESETS.map(preset => (
-          <div className='btn-sm' onClick={() => addPreset(preset)}>
+          <div key={preset.title} className='btn-sm' onClick={() => addPreset(preset)}>
             {preset.label}
           </div>
         ))}
@@ -59,10 +60,6 @@ function App() {
 }
 
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const root = createRoot( document.getElementById('root') as Element); 
+root.render(<App />);
 

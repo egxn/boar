@@ -65,6 +65,7 @@ input[type="text"] {
   margin: 8px;
   min-height: 80px;
   min-width: 80px;
+  user-select: none;
   width: fit-content;
 }
 
