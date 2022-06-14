@@ -32,17 +32,16 @@ function Key({ background, border, command, kind, label }: KeyInterface) {
   }
 
   return (
-    <div 
+    <button 
       className="key" 
       onClick={() => pushKey(kind)}
-      role="button"
       style={{
         background: `${background}`,
         border: `4px solid ${borderColor}`,
       }}
     >
       {label}
-    </div>
+    </button>
   );
 }
 

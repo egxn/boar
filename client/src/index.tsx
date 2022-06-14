@@ -1,13 +1,14 @@
 import emojis from './presets/emojis.json';
 import Key, { KeyInterface } from './Key';
 import ModalNewKey from './ModalNewKey';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
 const PRESETS = [emojis];
 
 function App() {
+  const appRef = useRef<HTMLDivElement>(null);
   const [keys, setKeys] = useState<KeyInterface[]>([]);
   const [showModalNewKey, setShowModalNewKey] = useState(false);
   const [presets, setPresets] = useState<string[]>([]);
@@ -20,6 +21,15 @@ function App() {
     localStorage.setItem('keys', JSON.stringify(newKeys));
     setShowModalNewKey(false);
   };
+
+  const toFullscreen = () => {
+    if (document.fullscreenElement) {
+      console.log('exit fullscreen');
+      document.exitFullscreen();
+    } else if (appRef?.current?.requestFullscreen) {
+      appRef.current.requestFullscreen();
+    } 
+  }
 
 
   useEffect(() => {
@@ -38,22 +48,26 @@ function App() {
       const newKeys: KeyInterface[] = [...keys, ...presetKeys];
       setKeys(newKeys);
       setPresets(presets => [...presets, title]);
+    } else {
+      setKeys(currentKeys => currentKeys.filter(key => !presetKeys.includes(key)));
+      setPresets(presets => presets.filter(preset => preset !== title));
     }
   }
 
   return (
-    <div className='boar'>
+    <div className='boar' ref={appRef}>
       <div className='btns'>
         {keys.map((key, index) => <Key key={`${index}-${key.label}`} {...key} />)}
       </div>
       {!showModalNewKey && <div className='btn-bar'>
-        <div className='btn-sm' onClick={openModalNewKey}> + </div>
+        <button className='btn-sm' onClick={openModalNewKey}> + </button>
+        <button className='btn-sm' onClick={toFullscreen}> 📺 </button>
         {PRESETS.map(preset => (
-          <div key={preset.title} className='btn-sm' onClick={() => addPreset(preset)}>
+          <button key={preset.title} className='btn-sm' onClick={() => addPreset(preset)}>
             {preset.label}
-          </div>
+          </button>
         ))}
-      </div>}
+      </div>}        
       {showModalNewKey && <ModalNewKey onClose={closeModalNewKey} onSave={saveKey} />}
     </div>
   );

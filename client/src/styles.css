@@ -24,7 +24,8 @@ input[type="text"] {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: 24px;
+  justify-content: center;
+  margin: 16px;
 }
 
 .btn-bar {
@@ -52,6 +53,7 @@ input[type="text"] {
   min-height: 30px;
   min-width: 40px;
   justify-content: center;
+  user-select: none;
 }
 
 .key {
