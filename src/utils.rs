@@ -57,3 +57,22 @@ pub fn push_keys(commands: &str, kind: &str) {
     println!("{:?}", output);
   } 
 }
+
+#[test]
+fn test_get_home() {
+  let req = Request::builder()
+    .uri("/index.html")
+    .body(Body::empty())
+    .unwrap();
+
+  let res = get_asset(&req);
+  assert_eq!(res.status(), 200);
+}
+
+#[test]
+fn test_get_params() {
+  let query = "?key1=value1&key2=value2";
+  let params_map = get_params(query);
+  assert_eq!(params_map["key1"], "value1");
+  assert_eq!(params_map["key2"], "value2");
+}

@@ -6,6 +6,7 @@ use std::convert::Infallible;
 use std::net::SocketAddr;
 use qrcodegen::QrCode;
 use qrcodegen::QrCodeEcc;
+use urlencoding::decode;
 
 mod utils;
 
@@ -27,7 +28,8 @@ async fn routes(req: Request<Body>) -> Result<Response<Body>, Infallible> {
                   else { "" };
 
       if kind == "key" || kind == "type" {        
-        utils::push_keys(params.get(kind).unwrap(), kind);
+        let value = decode(params.get(kind).unwrap()).expect("UTF-8");
+        utils::push_keys(&value, kind);
         *response.body_mut() = StatusCode::OK.to_string().into();  
       } else {
         *response.body_mut() = StatusCode::BAD_REQUEST.to_string().into();
