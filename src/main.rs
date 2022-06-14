@@ -19,7 +19,7 @@ async fn routes(req: Request<Body>) -> Result<Response<Body>, Infallible> {
 
   match (req.method(), req.uri().path()) {
     (&Method::GET, "/") => {
-      response = utils::get_home();
+      response = utils::get_home().unwrap();
     },
     (&Method::GET, "/grunt")  => { 
       let params : HashMap<&str, &str> = utils::get_params(req.uri().query().unwrap());
@@ -37,7 +37,7 @@ async fn routes(req: Request<Body>) -> Result<Response<Body>, Infallible> {
     },
     (&Method::GET, _ ) => {
       if is_asset(&req) {
-        response = utils::get_asset(&req);    
+        response = utils::get_static_asset(&req).unwrap();
       } else {
         *response.status_mut() = StatusCode::NOT_FOUND;
       }

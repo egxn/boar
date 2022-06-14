@@ -1,23 +1,35 @@
-use hyper::{Body, Request, Response};
+use hyper::{Body, Request, Response, StatusCode};
 use qrcodegen::QrCode;
 use std::collections::HashMap;
 use std::fs;
-use std::path::Path;
 use std::process::Command;
 
-pub fn get_asset(req: &Request<Body>) -> Response<Body> {
-  let root = String::from("./client/build");
-  let path = root + req.uri().path();
-  let asset = fs::read_to_string(path).unwrap();
+pub fn get_asset(resource: &str) -> Result<String, String> {
+  let root = String::from("./client/build/");
+  let asset = fs::read_to_string(root + resource);
 
-  Response::new(Body::from(asset))
+  match asset {
+    Ok(asset) => Ok(asset),
+    Err(_) => Ok((StatusCode::NOT_FOUND.to_string()).into()),
+  }
 }
 
-pub fn get_home() -> Response<Body> {
-  let root = Path::new("./client/build");
-  let index = fs::read_to_string(root.join("index.html")).unwrap();
+pub fn get_static_asset(req: &Request<Body>) -> Result<Response<Body>, Response<Body>> {
+  let asset = get_asset(&req.uri().path());
 
-  Response::new(Body::from(index.to_string()))
+  match asset {
+    Ok(asset) => Ok(Response::new(Body::from(asset))),
+    Err(_) => Ok(Response::new(StatusCode::NOT_FOUND.to_string().into()))
+  }
+}
+
+pub fn get_home() -> Result<Response<Body>, Response<Body>> {
+  let index = get_asset("index.html");
+
+  match index {
+    Ok(index) => Ok(Response::new(Body::from(index.to_string()))),
+    Err(_) => Ok(Response::new(StatusCode::NOT_FOUND.to_string().into()))
+  }
 }
 
 pub fn get_params(query: &str) -> HashMap<&str, &str> {
@@ -45,9 +57,6 @@ pub fn print_qr(qr: &QrCode) {
 }
 
 pub fn push_keys(commands: &str, kind: &str) {   
-  println!("{}", kind);
-  println!("{}", commands);
-
   if cfg!(target_os = "linux") {
     let output = Command::new("xdotool")
       .arg(kind)
@@ -65,14 +74,13 @@ fn test_get_home() {
     .body(Body::empty())
     .unwrap();
 
-  let res = get_asset(&req);
-  assert_eq!(res.status(), 200);
+  let res = get_static_asset(&req);
+  assert_eq!(res.unwrap().status(), 200);
 }
 
 #[test]
 fn test_get_params() {
-  let query = "?key1=value1&key2=value2";
+  let query = "key=super+d";
   let params_map = get_params(query);
-  assert_eq!(params_map["key1"], "value1");
-  assert_eq!(params_map["key2"], "value2");
+  assert_eq!(params_map["key"], "super+d");
 }
