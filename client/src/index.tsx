@@ -31,6 +31,9 @@ function App() {
     } 
   }
 
+  const deleteButtonScreen = () => {
+    setKeys([]);
+  }
 
   useEffect(() => {
     const storedKeys = JSON.parse(localStorage.getItem('keys') || '[]');
@@ -67,6 +70,7 @@ function App() {
             {preset.label}
           </button>
         ))}
+        <button className='btn-sm' onClick={deleteButtonScreen}> 🧹 </button>
       </div>}        
       {showModalNewKey && <ModalNewKey onClose={closeModalNewKey} onSave={saveKey} />}
     </div>
