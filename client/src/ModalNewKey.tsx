@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { KeyInterface } from "./Key";
 import './styles.css';
 
@@ -32,14 +32,15 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
 
   const toggleKind = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id } = event.target;
-    console.log("Toggle kind", id);
     setKind(id);
   }
 
   return (
     <div className="modal-new-key">
-      <div className="row">
-        <h1>Add Key</h1>
+      <div className="row modal-title">
+        <div className="key title-btn" onClick={onClose} role="button">Close ❌</div>
+        <h1>Add a new key</h1>
+        <div className="key title-btn" onClick={saveKey} role="button">Save 💾</div>
       </div>
       <div className="row">
         <label htmlFor="command">Command</label>
@@ -53,20 +54,14 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
         <label htmlFor="keys"> Kind</label>
         <label htmlFor="keys"> Keys</label>
         <input id="keys" onChange={toggleKind} name="kind" type="radio" value="key" checked={kind === "key"} />
-        <label htmlFor="type"> Type</label>
+        <label className="ml" htmlFor="type"> Type</label>
         <input id="type" onChange={toggleKind} name="kind" type="radio" value="type" checked={kind === "type"}/>
       </div>
       <div className="row">
         <label htmlFor="background">Background</label>
         <input className="input-color" id="background" onChange={handleChange} type="color" value={newKey.background} />
-      </div>
-      <div className="row">
-        <label htmlFor="border">Border</label>
+        <label className="ml" htmlFor="border">Border</label>
         <input className="input-text" id="border" onChange={handleChange} type="color" value={newKey.border} />
-      </div>
-      <div className="row save-n-close">
-        <div className="key" onClick={onClose} role="button">❌</div>
-        <div className="key" onClick={saveKey} role="button">💾</div>
       </div>
     </div>
   );

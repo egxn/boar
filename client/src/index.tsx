@@ -1,7 +1,7 @@
 import emojis from './presets/emojis.json';
 import Key, { KeyInterface } from './Key';
 import ModalNewKey from './ModalNewKey';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 

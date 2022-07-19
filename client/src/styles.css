@@ -35,7 +35,7 @@ input[type="text"] {
   display: flex;
   height: 40px;
   justify-content: flex-start;
-  position: absolute;
+  position: fixed;
   width: 100%;
   z-index: 2;
 }
@@ -71,18 +71,26 @@ input[type="text"] {
   width: fit-content;
 }
 
+.title-btn {
+  font-size: 16px;
+}
+
 .modal-new-key {
   background-color: #0d1117;
   color: #fff;
   display: flex;
   flex-direction: column;
-  height: calc(100% - 40px);
+  height: auto;
   left: 0;
   margin: 20px;
   outline: 4px solid #f78166;
   position: absolute;
   top: 0;
   width: calc(100% - 40px);
+}
+
+.ml {
+  margin-left: 8px;
 }
 
 .row {
@@ -92,6 +100,10 @@ input[type="text"] {
   margin-bottom: 10px;
   padding-left: 20px;
   width: calc(100% - 40px);
+}
+
+.modal-title {
+  justify-content: space-between;
 }
 
 label {
