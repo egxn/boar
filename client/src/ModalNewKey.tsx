@@ -39,7 +39,7 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
     <div className="modal-new-key">
       <div className="row modal-title">
         <div className="key title-btn" onClick={onClose} role="button">Close ❌</div>
-        <h1>Add a new key</h1>
+        <h3>Add a new key</h3>
         <div className="key title-btn" onClick={saveKey} role="button">Save 💾</div>
       </div>
       <div className="row">
