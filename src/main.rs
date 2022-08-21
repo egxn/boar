@@ -27,9 +27,9 @@ async fn routes(req: Request<Body>) -> Result<Response<Body>, Infallible> {
                   else if params.contains_key("type") { "type" }
                   else { "" };
 
-      if kind == "key" || kind == "type" {        
+      if kind == "key" || kind == "type" {
         let value = decode(params.get(kind).unwrap()).expect("UTF-8");
-        utils::push_keys(&value, kind);
+        utils::push_keys(&value, kind).await;
         *response.body_mut() = StatusCode::OK.to_string().into();  
       } else {
         *response.body_mut() = StatusCode::BAD_REQUEST.to_string().into();

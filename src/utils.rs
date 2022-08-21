@@ -2,7 +2,7 @@ use hyper::{Body, Request, Response, StatusCode};
 use qrcodegen::QrCode;
 use std::collections::HashMap;
 use std::fs;
-use std::process::Command;
+use async_process::Command;
 
 pub fn get_asset(resource: &str) -> Result<String, String> {
   let root = String::from("./client/build/");
@@ -56,12 +56,13 @@ pub fn print_qr(qr: &QrCode) {
 	println!();
 }
 
-pub fn push_keys(commands: &str, kind: &str) {   
+pub async fn push_keys(commands: &str, kind: &str) {   
   if cfg!(target_os = "linux") {
     let output = Command::new("xdotool")
       .arg(kind)
       .arg(commands)
-      .output();
+      .output()
+      .await;
 
     println!("{:?}", output);
   } 

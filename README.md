@@ -49,7 +49,6 @@ Create a new file in  `/client/src/presets/`
   "keys": [
     {
       "background": "",
-      "border": "",
       "command": "",
       "label": "",
       "kind": "" // "key" or "type"

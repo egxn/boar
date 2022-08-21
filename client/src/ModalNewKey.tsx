@@ -13,14 +13,13 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
     command: "",
     label: "",
     background: "#ffffff",
-    border: "#00ffff",
     idApp: "",
     kind,
   });
 
   const saveKey = () => {
-    const { command, label, background, border } = newKey;
-    if (command && label && background && border) {
+    const { command, label, background } = newKey;
+    if (command && label && background) {
       onSave(newKey);
     }
   };
@@ -39,7 +38,7 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
     <div className="modal-new-key">
       <div className="row modal-title">
         <div className="key title-btn" onClick={onClose} role="button">Close ❌</div>
-        <h3>Add a new key</h3>
+        <h3> Add a new key</h3>
         <div className="key title-btn" onClick={saveKey} role="button">Save 💾</div>
       </div>
       <div className="row">
@@ -47,12 +46,12 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
         <input className="input-text" id="command" list="keys" onChange={handleChange} type="text" value={newKey.command} />
       </div>
       <div className="row">
-        <label htmlFor="label">Label</label>
+        <label htmlFor="label"> Label </label>
         <input className="input-text" id="label" maxLength={9} onChange={handleChange} type="text" value={newKey.label} />
       </div>
       <div className="row" >
-        <label htmlFor="keys"> Kind</label>
-        <label htmlFor="keys"> Keys</label>
+        <label htmlFor="keys"> Kind </label>
+        <label htmlFor="keys"> Keys </label>
         <input id="keys" onChange={toggleKind} name="kind" type="radio" value="key" checked={kind === "key"} />
         <label className="ml" htmlFor="type"> Type</label>
         <input id="type" onChange={toggleKind} name="kind" type="radio" value="type" checked={kind === "type"}/>
@@ -60,8 +59,6 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
       <div className="row">
         <label htmlFor="background">Background</label>
         <input className="input-color" id="background" onChange={handleChange} type="color" value={newKey.background} />
-        <label className="ml" htmlFor="border">Border</label>
-        <input className="input-text" id="border" onChange={handleChange} type="color" value={newKey.border} />
       </div>
     </div>
   );

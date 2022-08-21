@@ -1,11 +1,13 @@
 import emojis from './presets/emojis.json';
+import gimp from './presets/gimp.json';
+
 import Key, { KeyInterface } from './Key';
 import ModalNewKey from './ModalNewKey';
 import { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-const PRESETS = [emojis];
+const PRESETS = [emojis, gimp];
 
 function App() {
   const appRef = useRef<HTMLDivElement>(null);
@@ -15,12 +17,19 @@ function App() {
 
   const openModalNewKey = () => setShowModalNewKey(true);
   const closeModalNewKey = () => setShowModalNewKey(false);
+
   const saveKey = (newKey: KeyInterface) => {
     const newKeys: KeyInterface[] = [...keys, newKey];
     setKeys(newKeys);
     localStorage.setItem('keys', JSON.stringify(newKeys));
     setShowModalNewKey(false);
   };
+
+  const removeKey = (command: string) => {
+    const newKeys: KeyInterface[] = keys.filter(key => key.command !== command);
+    setKeys(newKeys);
+    localStorage.setItem('keys', JSON.stringify(newKeys));
+  }
 
   const toFullscreen = () => {
     if (document.fullscreenElement) {
@@ -59,9 +68,6 @@ function App() {
 
   return (
     <div className='boar' ref={appRef}>
-      <div className='btns'>
-        {keys.map((key, index) => <Key key={`${index}-${key.label}`} {...key} />)}
-      </div>
       {!showModalNewKey && <div className='btn-bar'>
         <button className='btn-sm' onClick={openModalNewKey}> + </button>
         <button className='btn-sm' onClick={toFullscreen}> 📺 </button>
@@ -71,7 +77,10 @@ function App() {
           </button>
         ))}
         <button className='btn-sm' onClick={deleteButtonScreen}> 🧹 </button>
-      </div>}        
+      </div>}
+      <div className='btns'>
+        {keys.map((key, index) => <Key key={`${index}-${key.label}`} {...key} remove={removeKey} />)}
+      </div>        
       {showModalNewKey && <ModalNewKey onClose={closeModalNewKey} onSave={saveKey} />}
     </div>
   );
@@ -80,4 +89,3 @@ function App() {
 
 const root = createRoot( document.getElementById('root') as Element); 
 root.render(<App />);
-
