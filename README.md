@@ -1,8 +1,6 @@
 # Boar
 
-<div style="text-align:center; font-size: 72px;">
- 🐗
-</div>
+<img src="./assets/boar-icon.png" alt="boar icon" style="margin-left:auto;margin-right-auto;"/>
 
 ---
 
@@ -59,7 +57,7 @@ Create a new file in  `/client/src/presets/`
 
 ## Idea
 
-This is a 🦀 Rust app as webserver and a ⚛️ React app as web application over your local network
+This is a 🦀 Rust app as web server and a ⚛️ React app as web application over your local network
 
 
 

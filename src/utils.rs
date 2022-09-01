@@ -65,7 +65,7 @@ pub async fn push_keys(commands: &str, kind: &str) {
       .await;
 
     println!("{:?}", output);
-  } 
+  }
 }
 
 #[test]

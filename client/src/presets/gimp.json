@@ -5,7 +5,13 @@
     {
       "background": "#ffffff",
       "command": "M",
-      "label": "👋",
+      "label": "move",
+      "kind": "key"
+    },
+    {
+      "background": "#ffffff",
+      "command": "C",
+      "label": "copy",
       "kind": "key"
     }
   ]
