@@ -25,7 +25,7 @@ input[type="text"] {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 16px;
+  margin: 12px;
   margin-top: 56px;
 }
 
@@ -64,18 +64,53 @@ input[type="text"] {
   font-size: 32px;
   height: 80px;
   justify-content: center;
-  margin: 8px;
+  margin: 4px;
   min-height: 80px;
   min-width: 80px;
   user-select: none;
   width: fit-content;
 }
 
-.title-btn {
-  font-size: 16px;
+
+.key-commands {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
-.modal-new-key {
+.key-command {
+  align-items: center;
+  display: flex;
+  font-size: 12px;
+  justify-content: center;
+  margin: 2px;
+  border: 1px solid black;
+}
+
+/* common */
+
+.ml {
+  margin-left: 8px;
+}
+
+
+/* Modal */
+
+.modal-overlay {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  height: 100vh;
+  height: 100vh;
+  justify-content: center;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+}
+
+.modal-new-keycap {
   background-color: #0d1117;
   color: #fff;
   display: flex;
@@ -84,33 +119,52 @@ input[type="text"] {
   left: 0;
   margin: 20px;
   outline: 4px solid #f78166;
-  position: absolute;
   top: 0;
   width: calc(100% - 40px);
 }
 
-.ml {
-  margin-left: 8px;
+.title-btn {
+  align-items: center;
+  border-radius: 4px;
+  border: 1px dotted white;
+  display: flex;
+  font-size: 12px;
+  height: 30px;
+  justify-content: center;
+  margin: 4px;
+  min-width: 80px;
+  user-select: none;
+  width: fit-content;
 }
 
 .row {
   align-items: center;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   margin-bottom: 10px;
   padding-left: 20px;
   width: calc(100% - 40px);
 }
 
-.modal-title {
-  justify-content: space-between;
-}
-
-label {
+#label {
   width: 120px;
 }
 
-#command, #idApp, #label {
+.modal-title {
+  font-size: 16px;
+  justify-content: space-between;
+  margin: 12px 0;
+}
+
+.row-type {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#command, #idApp {
   width: calc(100% - 130px);
 }
 

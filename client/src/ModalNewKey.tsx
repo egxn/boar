@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { KeyInterface } from "./Key";
+import keyCommands from "./keys";
 import './styles.css';
 
 interface ModalNewKeyProps {
@@ -24,41 +25,63 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = event.target;
-    setNewKey({ ...newKey, [id]: value });
-  }
-
-  const toggleKind = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id } = event.target;
-    setKind(id);
-  }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => 
+    setNewKey(k =>  ({ ...k, [event.target.id]: event.target.value }));
+  const toggleKind = (event: React.ChangeEvent<HTMLInputElement>) => setKind(event.target.id);
+  const pushCommand = (command: string) => 
+    setNewKey(k => ({ ...k, command: k.command ? k.command + '+' + command : command }));
 
   return (
-    <div className="modal-new-key">
-      <div className="row modal-title">
-        <div className="key title-btn" onClick={onClose} role="button">Close ❌</div>
-        <h3> Add a new key</h3>
-        <div className="key title-btn" onClick={saveKey} role="button">Save 💾</div>
-      </div>
-      <div className="row">
-        <label htmlFor="command">Command</label>
-        <input className="input-text" id="command" list="keys" onChange={handleChange} type="text" value={newKey.command} />
-      </div>
-      <div className="row">
-        <label htmlFor="label"> Label </label>
-        <input className="input-text" id="label" maxLength={9} onChange={handleChange} type="text" value={newKey.label} />
-      </div>
-      <div className="row" >
-        <label htmlFor="keys"> Kind </label>
-        <label htmlFor="keys"> Keys </label>
-        <input id="keys" onChange={toggleKind} name="kind" type="radio" value="key" checked={kind === "key"} />
-        <label className="ml" htmlFor="type"> Type</label>
-        <input id="type" onChange={toggleKind} name="kind" type="radio" value="type" checked={kind === "type"}/>
-      </div>
-      <div className="row">
-        <label htmlFor="background">Background</label>
-        <input className="input-color" id="background" onChange={handleChange} type="color" value={newKey.background} />
+    <div className="modal-overlay">
+      <div className="modal-new-keycap">
+        <div className="row modal-title">
+          <div className="title-btn" onClick={onClose} role="button">Close ❌</div>
+          Add a new key
+          <div className="title-btn" onClick={saveKey} role="button">Save 💾</div>
+        </div>
+
+        <div className="row label">
+          <label htmlFor="label"> Label </label>
+          <input className="input-text" id="label" maxLength={9} onChange={handleChange} type="text" value={newKey.label} />
+        </div>
+
+        <div className="row row-type" >
+          <input id="keys" onChange={toggleKind} name="kind" type="radio" value="key" checked={kind === "keys"} />
+          <label htmlFor="keys"> Keys </label>
+          <input id="type" onChange={toggleKind} name="kind" type="radio" value="type" checked={kind === "type"}/>
+          <label className="ml" htmlFor="type"> Text </label>
+        </div>
+
+        {kind === "keys" && (
+          <div className="row key-commands">
+            {keyCommands.map((keyCommand) => 
+              <button 
+                className="key-command" 
+                key={keyCommand}
+                onClick={() => pushCommand(keyCommand)}
+              >
+                {keyCommand}
+              </button>)}
+          </div>
+        )}
+
+        <div className="row">
+          <label htmlFor="command">Command</label>
+          <input
+            disabled={kind === "keys"}
+            className="input-text"
+            id="command"
+            list="keys"
+            onChange={handleChange}
+            type="text"
+            value={newKey.command}
+          />
+        </div>
+
+        <div className="row">
+          <label htmlFor="background">Background</label>
+          <input className="input-color" id="background" onChange={handleChange} type="color" value={newKey.background} />
+        </div>
       </div>
     </div>
   );

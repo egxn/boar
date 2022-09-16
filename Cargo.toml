@@ -12,4 +12,6 @@ hyper = { version = "0.14", features = ["full"] }
 tokio = { version = "1", features = ["full"] }
 qrcodegen = "1.8.0"
 urlencoding = "2.1.0"
+arboard = "2.1.1"
 async-process = "1.4.0"
+rdev = "0.5.1"

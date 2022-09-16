@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import './styles.css';
 
 export interface KeyInterface {
@@ -23,7 +23,7 @@ function Key({ background, command, kind, label, remove }: KeyInterface) {
   const BORDER_OK = "#00ff00";
   const BORDER_ERROR = "#ff0000";
   
-  useEffect(() => {
+  useLayoutEffect(() => {
     if ([BORDER_OK, BORDER_ERROR].includes(borderColor)) {
       setTimeout(() =>  setBorderColor(randomHexColor()) , 250); 
     }
@@ -31,7 +31,9 @@ function Key({ background, command, kind, label, remove }: KeyInterface) {
 
   const pushKey = async (kind: string) => {
     const url = window.location.host;
+    console.log('pushed key')
     const res = await fetch(`http://${url}/grunt?${kind}=${command}`);
+    console.log(res);
     if (res.status === 200) {
       setBorderColor(BORDER_OK);
     } else {

@@ -1,25 +1,26 @@
-# Boar
+# Boar 🐗
 
-<img src="./assets/boar-icon.png" alt="boar icon" style="margin-left:auto;margin-right-auto;"/>
+<p align="center">
+  <a href="https://github/egxn/boar">
+    <img alt="babel" src="./assets/boar-icon.png" width="100" />
+  </a>
+</p>
 
----
+<p align="center">
+  A customizable touchpad for linux using your mobile device
+</p>
 
-A customizable touchpad for linux using your mobile device
 
-Create shortcuts that you can use as:
+Some uses:
 
-* 📡 Streaming proposes
-* 🙂 Emoji keyboard
-* 🎨 Shortcuts for apps (like GIMP)
-* 🔲 Touch macro pad
-* 🔔 Touch midi controller
-* ❇️ And more
+-[x] 🙂 Emojis keyboard
+-[x] 📡 Streaming
+-[x] 🎨 Apps Shortcuts 
+-[x] 🔔 Touch midi controller
 
 ## Dependencies
 
-> xdotool
-
-**This app works works with X.Org Server (Still does not support Wayland environments due to the xdotool dependency).
+This app works works linux with X.Org Server.
 
 ## Development dependencies
 
@@ -28,13 +29,11 @@ Create shortcuts that you can use as:
 
 ## Setup
 
-```cd client && yarn```
-
-```yarn build && cd ..```
-
-| Command | Description |
-| ---     | ---         |
-| `cargo run`| Run app  |
+``` bash
+  yarn --cwd client install
+  yarn --cwd client build
+  cargo run
+```
 
 ## How add a preset of shortcuts
 
@@ -57,8 +56,9 @@ Create a new file in  `/client/src/presets/`
 
 ## Idea
 
-This is a 🦀 Rust app as web server and a ⚛️ React app as web application over your local network
+This is a Rust 🦀 server and a React ⚛️ app as GUI over your local wifi network
 
 
+---
 
-Built with Rust 🦀 TypeScript 🔷 and 💖 
+Built with Rust 🦀 TS 🔷 

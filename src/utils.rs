@@ -2,7 +2,9 @@ use hyper::{Body, Request, Response, StatusCode};
 use qrcodegen::QrCode;
 use std::collections::HashMap;
 use std::fs;
-use async_process::Command;
+use arboard::Clipboard;
+use rdev::{simulate, EventType, Key, SimulateError};
+use std::{thread, time};
 
 pub fn get_asset(resource: &str) -> Result<String, String> {
   let root = String::from("./client/build/");
@@ -44,7 +46,7 @@ pub fn get_params(query: &str) -> HashMap<&str, &str> {
   return params_map;
 }
 
-pub fn print_qr(qr: &QrCode) {
+pub fn print_qr(qr: &QrCode) -> () {
 	let border: i32 = 4;
 	for y in -border .. qr.size() + border {
 		for x in -border .. qr.size() + border {
@@ -56,16 +58,141 @@ pub fn print_qr(qr: &QrCode) {
 	println!();
 }
 
-pub async fn push_keys(commands: &str, kind: &str) {   
-  if cfg!(target_os = "linux") {
-    let output = Command::new("xdotool")
-      .arg(kind)
-      .arg(commands)
-      .output()
-      .await;
+fn type_content(commands: &str) -> () {
+  let mut clipboard = Clipboard::new().unwrap();
+  let clipboard_content = clipboard.get_text().unwrap();
+	clipboard.set_text(commands.into()).unwrap();
+  send(&EventType::KeyPress(Key::ControlLeft));
+  send(&EventType::KeyPress(Key::KeyV));
+  send(&EventType::KeyRelease(Key::KeyV));
+  send(&EventType::KeyRelease(Key::ControlLeft));
+  clipboard.set_text(clipboard_content.into()).unwrap();
+}
 
-    println!("{:?}", output);
+
+fn key_commands(commands: &str) -> () {
+  let commands: Vec<&str> = commands.split('+').collect();
+  for command in commands.clone() {
+
+    match string_to_key(command) {
+      Some(key) => send(&EventType::KeyPress(key)),
+      None => continue,
+    };
   }
+
+  for command in commands {
+    match string_to_key(command) {
+      Some(key) => send(&EventType::KeyRelease(key)),
+      None => continue,
+    };
+  }
+}
+
+fn string_to_key(string: &str) -> Option<Key> {
+  let key: Key = match string {
+    "0" => Key::Num0,
+    "1" => Key::Num1,
+    "2" => Key::Num2,
+    "3" => Key::Num3,
+    "4" => Key::Num4,
+    "5" => Key::Num5,
+    "6" => Key::Num6,
+    "7" => Key::Num7,
+    "8" => Key::Num8,
+    "9" => Key::Num9,
+    "a" => Key::KeyA,
+    "alt" => Key::Alt,
+    "altgr" => Key::AltGr,
+    "b" => Key::KeyB,
+    "backslash" => Key::BackSlash,
+    "backspace" => Key::Backspace,
+    "c" => Key::KeyC,
+    "capslock" => Key::CapsLock,
+    "comma" => Key::Comma,
+    "ctrl" => Key::ControlLeft,
+    "d" => Key::KeyD,
+    "delete" => Key::Delete,
+    "down" => Key::DownArrow,
+    "e" => Key::KeyE,
+    "end" => Key::End,
+    "enter" => Key::Return,
+    "esc" => Key::Escape,
+    "f" => Key::KeyF,
+    "f1" => Key::F1,
+    "f10" => Key::F10,
+    "f11" => Key::F11,
+    "f12" => Key::F12,
+    "f2" => Key::F2,
+    "f3" => Key::F3,
+    "f4" => Key::F4,
+    "f5" => Key::F5,
+    "f6" => Key::F6,
+    "f7" => Key::F7,
+    "f8" => Key::F8,
+    "f9" => Key::F9,
+    "g" => Key::KeyG,
+    "h" => Key::KeyH,
+    "home" => Key::Home,
+    "i" => Key::KeyI,
+    "insert" => Key::Insert,
+    "j" => Key::KeyJ,
+    "k" => Key::KeyK,
+    "l" => Key::KeyL,
+    "left" => Key::LeftArrow,
+    "m" => Key::KeyM,
+    "meta" => Key::MetaLeft,
+    "super" => Key::MetaLeft,
+    "n" => Key::KeyN,
+    "numlock" => Key::NumLock,
+    "o" => Key::KeyO,
+    "p" => Key::KeyP,
+    "pagedown" => Key::PageDown,
+    "pageup" => Key::PageUp,
+    "pause" => Key::Pause,
+    "printscreen" => Key::PrintScreen,
+    "q" => Key::KeyQ,
+    "r" => Key::KeyR,
+    "return" => Key::Return,
+    "right" => Key::RightArrow,
+    "s" => Key::KeyS,
+    "scrolllock" => Key::ScrollLock,
+    "semicolon" => Key::SemiColon,
+    "shift" => Key::ShiftLeft,
+    "slash" => Key::Slash,
+    "space" => Key::Space,
+    "t" => Key::KeyT,
+    "tab" => Key::Tab,
+    "u" => Key::KeyU,
+    "up" => Key::UpArrow,
+    "v" => Key::KeyV,
+    "w" => Key::KeyW,
+    "x" => Key::KeyX,
+    "y" => Key::KeyY,
+    "z" => Key::KeyZ,
+    _ => return None,
+  };
+
+  Some(key)
+}
+
+pub async fn push_keys(commands: &str, kind: &str) -> () {
+  if kind == "type" {
+    type_content(commands);
+  } else if kind == "key" {
+    key_commands(commands);
+  }
+}
+
+fn send(event_type: &EventType) -> () {
+  let delay = time::Duration::from_millis(20);
+  match simulate(event_type) {
+      Ok(()) => (),
+      Err(SimulateError) => {
+          println!("We could not send {:?}", event_type);
+      }
+  }
+
+  thread::sleep(delay);
 }
 
 #[test]
