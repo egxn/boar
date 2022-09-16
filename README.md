@@ -13,10 +13,10 @@
 
 Some uses:
 
--[x] 🙂 Emojis keyboard
--[x] 📡 Streaming
--[x] 🎨 Apps Shortcuts 
--[x] 🔔 Touch midi controller
+- [x] 🙂 Emojis keyboard
+- [x] 📡 Streaming
+- [x] 🎨 Apps Shortcuts 
+- [x] 🔔 Touch midi controller
 
 ## Dependencies
 
@@ -56,7 +56,7 @@ Create a new file in  `/client/src/presets/`
 
 ## Idea
 
-This is a Rust 🦀 server and a React ⚛️ app as GUI over your local wifi network
+🦀 Rust app as backend and a ⚛️ react app as UI, working over your local wifi network
 
 
 ---
