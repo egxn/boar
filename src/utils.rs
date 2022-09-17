@@ -1,37 +1,23 @@
-use hyper::{Body, Request, Response, StatusCode};
+use hyper::{Body, Response, StatusCode};
 use qrcodegen::QrCode;
 use std::collections::HashMap;
-use std::fs;
+use std::{str};
 use arboard::Clipboard;
 use rdev::{simulate, EventType, Key, SimulateError};
 use std::{thread, time};
+use rust_embed::{RustEmbed};
 
-pub fn get_asset(resource: &str) -> Result<String, String> {
-  let root = String::from("./client/build/");
-  let asset = fs::read_to_string(root + resource);
+#[derive(RustEmbed)]
+#[folder = "client/build"]
+struct Asset;
 
-  match asset {
-    Ok(asset) => Ok(asset),
-    Err(_) => Ok((StatusCode::NOT_FOUND.to_string()).into()),
-  }
-}
-
-pub fn get_static_asset(req: &Request<Body>) -> Result<Response<Body>, Response<Body>> {
-  let asset = get_asset(&req.uri().path());
-
-  match asset {
-    Ok(asset) => Ok(Response::new(Body::from(asset))),
-    Err(_) => Ok(Response::new(StatusCode::NOT_FOUND.to_string().into()))
-  }
-}
-
-pub fn get_home() -> Result<Response<Body>, Response<Body>> {
-  let index = get_asset("index.html");
-
-  match index {
-    Ok(index) => Ok(Response::new(Body::from(index.to_string()))),
-    Err(_) => Ok(Response::new(StatusCode::NOT_FOUND.to_string().into()))
-  }
+pub fn get_asset(path: &str) -> Response<Body> {
+  Asset::get(path)
+    .map(|asset| {
+      let response = Response::new(Body::from(asset.data));
+      response
+    })
+    .unwrap_or_else(|| Response::new(StatusCode::NOT_FOUND.to_string().into()))
 }
 
 pub fn get_params(query: &str) -> HashMap<&str, &str> {
@@ -195,15 +181,16 @@ fn send(event_type: &EventType) -> () {
   thread::sleep(delay);
 }
 
+
 #[test]
 fn test_get_home() {
-  let req = Request::builder()
+  let req = hyper::Request::builder()
     .uri("/index.html")
     .body(Body::empty())
     .unwrap();
 
-  let res = get_static_asset(&req);
-  assert_eq!(res.unwrap().status(), 200);
+  let res = get_asset(&req.uri().path());
+  assert_eq!(res.status(), 200);
 }
 
 #[test]

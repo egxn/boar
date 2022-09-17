@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  A customizable touchpad for linux using your mobile device
+  A customizable touchpad for linux 🐧 using your mobile device
 </p>
 
 
@@ -20,7 +20,7 @@ Some uses:
 
 ## Dependencies
 
-This app works works linux with X.Org Server.
+This app works in linux with X.Org Server and uses the following.
 
 ## Development dependencies
 
@@ -30,8 +30,6 @@ This app works works linux with X.Org Server.
 ## Setup
 
 ``` bash
-  yarn --cwd client install
-  yarn --cwd client build
   cargo run
 ```
 
@@ -54,11 +52,6 @@ Create a new file in  `/client/src/presets/`
 }
 ```
 
-## Idea
-
-🦀 Rust app as backend and a ⚛️ react app as UI, working over your local wifi network
-
-
 ---
 
-Built with Rust 🦀 TS 🔷 
+Built with Rust 🦀 and  TS 🔷 

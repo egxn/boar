@@ -1,0 +1,24 @@
+{
+  "title": "cut copy paste",
+  "label": "📋",
+  "keys": [
+    {
+      "background": "#ffffff",
+      "command": "ctrl+c",
+      "label": "🖇",
+      "kind": "key"
+    },
+    {
+      "background": "#ffffff",
+      "command": "ctrl+x",
+      "label": "✂",
+      "kind": "key"
+    },
+    {
+      "background": "#ffffff",
+      "command": "ctrl+v",
+      "label": "📌",
+      "kind": "key"
+    }
+  ]
+}

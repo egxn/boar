@@ -1,5 +1,5 @@
 import emojis from './presets/emojis.json';
-import gimp from './presets/gimp.json';
+import cutCopyPaste from './presets/cut-copy-paste.json';
 
 import Key, { KeyInterface } from './Key';
 import ModalNewKey from './ModalNewKey';
@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-const PRESETS = [emojis, gimp];
+const PRESETS = [cutCopyPaste, emojis];
 
 function App() {
   const appRef = useRef<HTMLDivElement>(null);

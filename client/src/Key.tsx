@@ -31,9 +31,7 @@ function Key({ background, command, kind, label, remove }: KeyInterface) {
 
   const pushKey = async (kind: string) => {
     const url = window.location.host;
-    console.log('pushed key')
     const res = await fetch(`http://${url}/grunt?${kind}=${command}`);
-    console.log(res);
     if (res.status === 200) {
       setBorderColor(BORDER_OK);
     } else {

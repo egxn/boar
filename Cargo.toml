@@ -1,17 +1,18 @@
 [package]
 name = "boar"
 edition = "2021"
-version = "0.1.0"
+version = "0.4.0"
 repository = "https://github.com/egxn/boar"
 license = "MIT"
 
 [dependencies]
+async-process = "1.5.0"
 local-ip-address = "0.4.4"
 futures = "0.3"
-hyper = { version = "0.14", features = ["full"] }
-tokio = { version = "1", features = ["full"] }
-qrcodegen = "1.8.0"
-urlencoding = "2.1.0"
 arboard = "2.1.1"
-async-process = "1.4.0"
+hyper = { version = "0.14", features = ["full"] }
+qrcodegen = "1.8.0"
 rdev = "0.5.1"
+rust-embed="6.4.1"
+tokio = { version = "1", features = ["full"] }
+urlencoding = "2.1.0"

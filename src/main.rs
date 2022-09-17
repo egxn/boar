@@ -13,33 +13,21 @@ mod utils;
 async fn routes(req: Request<Body>) -> Result<Response<Body>, Infallible> {
   let mut response = Response::new(Body::empty());
 
-  fn is_asset(req: &Request<Body>) -> bool {
-    req.uri().path().starts_with("/static/")
-  }
-
   match (req.method(), req.uri().path()) {
-    (&Method::GET, "/") => {
-      response = utils::get_home().unwrap();
-    },
+    (&Method::GET, "/") => response = utils::get_asset("index.html"),
+    (&Method::GET, "/main.js") => response = utils::get_asset("main.js"),
+    (&Method::GET, "/main.css") => response = utils::get_asset("main.css"),
     (&Method::GET, "/grunt")  => { 
       let params : HashMap<&str, &str> = utils::get_params(req.uri().query().unwrap());
       let kind =  if params.contains_key("key") { "key"} 
                   else if params.contains_key("type") { "type" }
                   else { "" };
-
-      if kind == "key" || kind == "type" {
+      if kind != "" {
         let value = decode(params.get(kind).unwrap()).expect("UTF-8");
         utils::push_keys(&value, kind).await;
         *response.body_mut() = StatusCode::OK.to_string().into();  
       } else {
         *response.body_mut() = StatusCode::BAD_REQUEST.to_string().into();
-      }
-    },
-    (&Method::GET, _ ) => {
-      if is_asset(&req) {
-        response = utils::get_static_asset(&req).unwrap();
-      } else {
-        *response.status_mut() = StatusCode::NOT_FOUND;
       }
     },
     _ => { *response.status_mut() = StatusCode::NOT_FOUND;  }
