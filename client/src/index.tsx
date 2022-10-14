@@ -1,5 +1,6 @@
 import emojis from './presets/emojis.json';
 import cutCopyPaste from './presets/cut-copy-paste.json';
+import terminal from './presets/terminal.json';
 
 import Key, { KeyInterface } from './Key';
 import ModalNewKey from './ModalNewKey';
@@ -7,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-const PRESETS = [cutCopyPaste, emojis];
+const PRESETS = [cutCopyPaste, terminal ,emojis];
 
 function App() {
   const appRef = useRef<HTMLDivElement>(null);
@@ -71,6 +72,11 @@ function App() {
     }
   }
 
+  const getSelectedKeys = (keys: KeyInterface[]) => {
+    const keysWindowApp = keys.filter(key => windowApp.includes(key.appTitle?.toLowerCase() || ''));    
+    return keysWindowApp.length > 0 ? keysWindowApp : keys;
+  }
+
   return (
     <div className='boar' ref={appRef}>
       {!showModalNewKey && <div className='btn-bar'>
@@ -84,12 +90,7 @@ function App() {
         <button className='btn-sm' onClick={deleteButtonScreen}> 🧹 </button>
       </div>}
       <div className='btns'>
-        {keys
-          .filter(key => windowApp.includes(key.appTitle?.toLowerCase() || ''))
-          .map((key, index) => <Key key={`${index}-${key.label}`} {...key} remove={removeKey} />)}
-        {keys
-          .filter(key => !windowApp.includes(key.appTitle?.toLowerCase() || ''))
-          .map((key, index) => <Key key={`${index}-${key.label}`} {...key} remove={removeKey} />)}
+        { getSelectedKeys(keys).map((key, index) => <Key key={`${index}-${key.label}`} {...key} remove={removeKey} />)}
       </div>
       {showModalNewKey && <ModalNewKey onClose={closeModalNewKey} onSave={saveKey} />}
     </div>

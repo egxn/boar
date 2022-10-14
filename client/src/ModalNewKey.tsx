@@ -3,19 +3,24 @@ import { KeyInterface } from "./Key";
 import keyCommands from "./keys";
 import './styles.css';
 
+enum Kind {
+  Keys = "keys",
+  Type = "type",
+}
+
 interface ModalNewKeyProps {
   onClose: () => void;
   onSave: (newKey: KeyInterface) => void;
 };
 
 function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
-  const [kind, setKind] = useState('key');
+  const [kind, setKind] = useState(Kind.Keys);
   const [newKey, setNewKey] = useState<KeyInterface>({
-    appTitle: "",
-    background: "#ffffff",
-    command: "",
+    appTitle: '',
+    background: '#ffffff',
+    command: '',
     kind,
-    label: "",
+    label: '',
   });
 
   const saveKey = () => {
@@ -27,7 +32,7 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => 
     setNewKey(k =>  ({ ...k, [event.target.id]: event.target.value }));
-  const toggleKind = (event: React.ChangeEvent<HTMLInputElement>) => setKind(event.target.id);
+  const toggleKind = (event: React.ChangeEvent<HTMLInputElement>) => setKind(event.target.value as Kind);
   const pushCommand = (command: string) => 
     setNewKey(k => ({ ...k, command: k.command ? k.command + '+' + command : command }));
 
@@ -46,13 +51,13 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
         </div>
 
         <div className="row row-type" >
-          <input id="keys" onChange={toggleKind} name="kind" type="radio" value="key" checked={kind === "keys"} />
+          <input id="keys" onChange={toggleKind} name="kind" type="radio" value={Kind.Keys} checked={kind === "keys"} />
           <label htmlFor="keys"> Keys </label>
-          <input id="type" onChange={toggleKind} name="kind" type="radio" value="type" checked={kind === "type"}/>
+          <input id="type" onChange={toggleKind} name="kind" type="radio" value={Kind.Type} checked={kind === "type"}/>
           <label className="ml" htmlFor="type"> Text </label>
         </div>
 
-        {kind === "keys" && (
+        {kind === Kind.Keys && (
           <div className="row key-commands">
             {keyCommands.map((keyCommand) => 
               <button 

@@ -1,0 +1,20 @@
+{
+  "title": "terminal",
+  "label": "👩‍💻",
+  "keys": [
+    {
+      "appTitle": "terminal",
+      "background": "#ffffff",
+      "command": "ctrl+shift+t",
+      "label": "🆕",
+      "kind": "key"
+    },
+    {
+      "appTitle": "terminal",
+      "background": "#ffffff",
+      "command": "ctrl+c",
+      "label": "🛑",
+      "kind": "key"
+    }
+  ]
+}

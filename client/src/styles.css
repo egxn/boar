@@ -72,7 +72,7 @@ input[type="text"] {
 }
 
 
-.key-commands {
+.key-commands {  
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -81,9 +81,10 @@ input[type="text"] {
 .key-command {
   align-items: center;
   display: flex;
-  font-size: 12px;
+  font-size: 14px;
+  height: 20px;
   justify-content: center;
-  margin: 2px;
+  margin: 4px;
   border: 1px solid black;
 }
 
