@@ -3,18 +3,21 @@
   "label": "📋",
   "keys": [
     {
+      "appTitle": "",
       "background": "#ffffff",
       "command": "ctrl+c",
       "label": "🖇",
       "kind": "key"
     },
     {
+      "appTitle": "",
       "background": "#ffffff",
       "command": "ctrl+x",
       "label": "✂",
       "kind": "key"
     },
     {
+      "appTitle": "",
       "background": "#ffffff",
       "command": "ctrl+v",
       "label": "📌",

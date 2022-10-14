@@ -2,9 +2,9 @@ import { useLayoutEffect, useState } from "react";
 import './styles.css';
 
 export interface KeyInterface {
+  appTitle?: string;
   background: string;
   command: string;
-  idApp?: string;
   label: string;
   kind: string;
 }
@@ -39,9 +39,8 @@ function Key({ background, command, kind, label, remove }: KeyInterface) {
     }
   }
 
-  const handleTouchStart = () => {
-    setTouchStartTime(Date.now());
-  }
+  const handleTouchStart = () => setTouchStartTime(Date.now());
+
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     const touchEndTime = Date.now();

@@ -11,11 +11,11 @@ interface ModalNewKeyProps {
 function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
   const [kind, setKind] = useState('key');
   const [newKey, setNewKey] = useState<KeyInterface>({
-    command: "",
-    label: "",
+    appTitle: "",
     background: "#ffffff",
-    idApp: "",
+    command: "",
     kind,
+    label: "",
   });
 
   const saveKey = () => {
@@ -81,6 +81,10 @@ function ModalNewKey({ onClose, onSave }: ModalNewKeyProps) {
         <div className="row">
           <label htmlFor="background">Background</label>
           <input className="input-color" id="background" onChange={handleChange} type="color" value={newKey.background} />
+        </div>
+        <div className="row">
+          <label htmlFor="idApp">App title</label>
+          <input className="input-text" id="appTitle" onChange={handleChange} type="text" value={newKey.appTitle} />
         </div>
       </div>
     </div>

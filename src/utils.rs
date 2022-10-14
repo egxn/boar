@@ -1,11 +1,9 @@
+use arboard::Clipboard;
 use hyper::{Body, Response, StatusCode};
 use qrcodegen::QrCode;
-use std::collections::HashMap;
-use std::{str};
-use arboard::Clipboard;
 use rdev::{simulate, EventType, Key, SimulateError};
-use std::{thread, time};
-use rust_embed::{RustEmbed};
+use rust_embed::RustEmbed;
+use std::{collections::HashMap, process::Command, str, thread, time};
 
 #[derive(RustEmbed)]
 #[folder = "client/build"]
@@ -169,6 +167,21 @@ pub async fn push_keys(commands: &str, kind: &str) -> () {
   }
 }
 
+pub fn get_focused_app_name() -> Option<String> {
+  let output = Command::new("xdotool")
+    .arg("getwindowfocus")
+    .arg("getwindowname")
+    .output();
+
+  match output {
+    Ok(output) => {
+      let output = String::from_utf8(output.stdout).unwrap();
+      Some(output)
+    },
+    Err(_) => None,
+  }
+}
+
 fn send(event_type: &EventType) -> () {
   let delay = time::Duration::from_millis(20);
   match simulate(event_type) {
@@ -199,3 +212,4 @@ fn test_get_params() {
   let params_map = get_params(query);
   assert_eq!(params_map["key"], "super+d");
 }
+

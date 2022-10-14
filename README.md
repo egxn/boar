@@ -20,7 +20,7 @@ Some uses:
 
 ## Dependencies
 
-This app works in linux with X.Org Server and uses the following.
+This app works in linux with X.Org and xdotool.
 
 ## Development dependencies
 

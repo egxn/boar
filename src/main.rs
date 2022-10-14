@@ -15,6 +15,16 @@ async fn routes(req: Request<Body>) -> Result<Response<Body>, Infallible> {
 
   match (req.method(), req.uri().path()) {
     (&Method::GET, "/") => response = utils::get_asset("index.html"),
+    (&Method::GET, "/appname") => {
+      let app_name = utils::get_focused_app_name();
+      match app_name {
+        Some(name) => {
+          *response.status_mut() = StatusCode::OK;
+          *response.body_mut() = Body::from(name);
+        },
+        None => *response.status_mut() = StatusCode::BAD_REQUEST,
+      }
+    },
     (&Method::GET, "/main.js") => response = utils::get_asset("main.js"),
     (&Method::GET, "/main.css") => response = utils::get_asset("main.css"),
     (&Method::GET, "/grunt")  => { 
@@ -25,9 +35,9 @@ async fn routes(req: Request<Body>) -> Result<Response<Body>, Infallible> {
       if kind != "" {
         let value = decode(params.get(kind).unwrap()).expect("UTF-8");
         utils::push_keys(&value, kind).await;
-        *response.body_mut() = StatusCode::OK.to_string().into();  
+        *response.status_mut() = StatusCode::OK;  
       } else {
-        *response.body_mut() = StatusCode::BAD_REQUEST.to_string().into();
+        *response.status_mut() = StatusCode::BAD_REQUEST;
       }
     },
     _ => { *response.status_mut() = StatusCode::NOT_FOUND;  }

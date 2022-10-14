@@ -14,6 +14,7 @@ function App() {
   const [keys, setKeys] = useState<KeyInterface[]>([]);
   const [showModalNewKey, setShowModalNewKey] = useState(false);
   const [presets, setPresets] = useState<string[]>([]);
+  const [windowApp, setWindowApp] = useState<string>('');
 
   const openModalNewKey = () => setShowModalNewKey(true);
   const closeModalNewKey = () => setShowModalNewKey(false);
@@ -33,22 +34,35 @@ function App() {
 
   const toFullscreen = () => {
     if (document.fullscreenElement) {
-      console.log('exit fullscreen');
       document.exitFullscreen();
     } else if (appRef?.current?.requestFullscreen) {
       appRef.current.requestFullscreen();
     } 
   }
 
-  const deleteButtonScreen = () => {
-    setKeys([]);
-  }
+  const deleteButtonScreen = () => setKeys([]);
 
   useEffect(() => {
     const storedKeys = JSON.parse(localStorage.getItem('keys') || '[]');
     setKeys([...storedKeys, ...keys]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const pingAppName = async () => {
+      const url = window.location.host;
+      const res = await fetch(`http://${url}/appname`);
+      if (res.status === 200) {
+        const appNameTitle = await res.text();
+        const appName = appNameTitle.toLowerCase();
+        if (appName !== windowApp) {
+          setWindowApp(appName);
+        }
+      }
+    }
+
+    setInterval(() => pingAppName(), 1000);
+  }, [setWindowApp, windowApp]);
 
   const addPreset = (preset: {
     title: string;
