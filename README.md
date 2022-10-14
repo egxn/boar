@@ -43,6 +43,7 @@ Create a new file in  `/client/src/presets/`
   "label": "",
   "keys": [
     {
+      "appTitle": "",
       "background": "",
       "command": "",
       "label": "",

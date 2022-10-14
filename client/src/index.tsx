@@ -49,20 +49,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const pingAppName = async () => {
-      const url = window.location.host;
-      const res = await fetch(`http://${url}/appname`);
-      if (res.status === 200) {
-        const appNameTitle = await res.text();
-        const appName = appNameTitle.toLowerCase();
-        if (appName !== windowApp) {
-          setWindowApp(appName);
-        }
-      }
-    }
-
-    setInterval(() => pingAppName(), 1000);
-  }, [setWindowApp, windowApp]);
+    const url = window.location.host;
+    let socket: WebSocket = new WebSocket(`ws://${url}/`);
+    socket.onopen = (e) => console.log("WS Connection established");
+    socket.onmessage = (event) => setWindowApp(String(event.data).toLowerCase());
+  }, []);
 
   const addPreset = (preset: {
     title: string;
@@ -93,8 +84,13 @@ function App() {
         <button className='btn-sm' onClick={deleteButtonScreen}> 🧹 </button>
       </div>}
       <div className='btns'>
-        {keys.map((key, index) => <Key key={`${index}-${key.label}`} {...key} remove={removeKey} />)}
-      </div>        
+        {keys
+          .filter(key => windowApp.includes(key.appTitle?.toLowerCase() || ''))
+          .map((key, index) => <Key key={`${index}-${key.label}`} {...key} remove={removeKey} />)}
+        {keys
+          .filter(key => !windowApp.includes(key.appTitle?.toLowerCase() || ''))
+          .map((key, index) => <Key key={`${index}-${key.label}`} {...key} remove={removeKey} />)}
+      </div>
       {showModalNewKey && <ModalNewKey onClose={closeModalNewKey} onSave={saveKey} />}
     </div>
   );
