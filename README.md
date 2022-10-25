@@ -20,17 +20,11 @@
 
 ## Features
 
-* Keys combinations
+[ Keys combinations](https://user-images.githubusercontent.com/9216933/197866471-fc3592a1-c3b6-4204-aaa6-e6c71d88223f.webm)
 
-[Keys combinations](./assets/demo_3.webm)
+[Text input](https://user-images.githubusercontent.com/9216933/197866498-8f6d05a4-b4ef-4cfd-a285-372e7652492f.webm)
 
-* Text input
-
-[Text input](./assets/demo_2.webm)
-
-* Keys depending on the app
-
-[Keys depending on the app](./assets/demo_1.webm)
+[Keys depending on the app](https://user-images.githubusercontent.com/9216933/197866513-14176330-3dac-4a25-888f-f66d83b70157.webm)
 
 ## Dependencies
 
