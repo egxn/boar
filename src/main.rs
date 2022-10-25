@@ -31,13 +31,18 @@ async fn handle_request(mut request: Request<Body>) -> Result<Response<Body>, In
     (&Method::GET, "/grunt")  => { 
       let params : HashMap<&str, &str> = utils::get_params(request.uri().query().unwrap());
       let kind =
-        if params.contains_key("keys") { "key"}
+        if params.contains_key("keys") { "keys"}
         else if params.contains_key("type") { "type" }
         else { "" };
       if kind != "" {
-        let value = decode(params.get(kind).unwrap()).expect("UTF-8");
-        utils::push_keys(&value, kind).await;
-        *response.status_mut() = StatusCode::OK;  
+        match params.get(kind) {
+          Some(commands) => {
+            let decoded_commands = decode(commands).expect("UTF-8");
+            utils::push_keys(&decoded_commands, kind).await;
+            *response.status_mut() = StatusCode::OK;
+          },
+          None => (),
+        }
       } else {
         *response.status_mut() = StatusCode::BAD_REQUEST;
       }

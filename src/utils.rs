@@ -162,7 +162,7 @@ fn string_to_key(string: &str) -> Option<Key> {
 pub async fn push_keys(commands: &str, kind: &str) -> () {
   if kind == "type" {
     type_content(commands);
-  } else if kind == "key" {
+  } else if kind == "keys" {
     key_commands(commands);
   }
 }

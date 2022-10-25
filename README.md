@@ -11,26 +11,43 @@
 </p>
 
 
-Some uses:
+## Some uses:
 
 - [x] 🙂 Emojis keyboard
 - [x] 📡 Streaming
 - [x] 🎨 Apps Shortcuts 
 - [x] 🔔 Touch midi controller
 
+## Features
+
+* Keys combinations
+
+[Keys combinations](./assets/demo_3.webm)
+
+* Text input
+
+[Text input](./assets/demo_2.webm)
+
+* Keys depending on the app
+
+[Keys depending on the app](./assets/demo_1.webm)
+
 ## Dependencies
 
 This app works in linux with X.Org and xdotool.
 
-## Development dependencies
+## Development
 
-* Node and npm
-* Rust and cargo
+### Dependencies
 
-## Setup
+* Node, yarn
+* Rust, cargo
+
+### Setup
 
 ``` bash
-  cargo run
+  cargo build --release
+  cargo run --release
 ```
 
 ## How add a preset of shortcuts
@@ -47,7 +64,7 @@ Create a new file in  `/client/src/presets/`
       "background": "",
       "command": "",
       "label": "",
-      "kind": "" // "key" or "type"
+      "kind": "" // "keys" or "type"
     }
   ]
 }
@@ -55,4 +72,4 @@ Create a new file in  `/client/src/presets/`
 
 ---
 
-Built with Rust 🦀 and  TS 🔷 
+Built with Rust 🦀 + TS 🔵
