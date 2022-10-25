@@ -2,8 +2,8 @@ import emojis from './presets/emojis.json';
 import cutCopyPaste from './presets/cut-copy-paste.json';
 import terminal from './presets/terminal.json';
 
-import Key, { KeyInterface } from './Key';
-import ModalNewKey from './ModalNewKey';
+import Keycap, { KeycapProps } from './Keycap';
+import ModalNewKeycap from './ModalNewKeycap';
 import { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
@@ -12,40 +12,14 @@ const PRESETS = [cutCopyPaste, terminal ,emojis];
 
 function App() {
   const appRef = useRef<HTMLDivElement>(null);
-  const [keys, setKeys] = useState<KeyInterface[]>([]);
-  const [showModalNewKey, setShowModalNewKey] = useState(false);
+  const [keycaps, setKeycaps] = useState<KeycapProps[]>([]);
+  const [showModalNewKeycap, setShowModalNewKeycap] = useState(false);
   const [presets, setPresets] = useState<string[]>([]);
   const [windowApp, setWindowApp] = useState<string>('');
 
-  const openModalNewKey = () => setShowModalNewKey(true);
-  const closeModalNewKey = () => setShowModalNewKey(false);
-
-  const saveKey = (newKey: KeyInterface) => {
-    const newKeys: KeyInterface[] = [...keys, newKey];
-    setKeys(newKeys);
-    localStorage.setItem('keys', JSON.stringify(newKeys));
-    setShowModalNewKey(false);
-  };
-
-  const removeKey = (command: string) => {
-    const newKeys: KeyInterface[] = keys.filter(key => key.command !== command);
-    setKeys(newKeys);
-    localStorage.setItem('keys', JSON.stringify(newKeys));
-  }
-
-  const toFullscreen = () => {
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    } else if (appRef?.current?.requestFullscreen) {
-      appRef.current.requestFullscreen();
-    } 
-  }
-
-  const deleteButtonScreen = () => setKeys([]);
-
   useEffect(() => {
-    const storedKeys = JSON.parse(localStorage.getItem('keys') || '[]');
-    setKeys([...storedKeys, ...keys]);
+    const storedKeycaps = JSON.parse(localStorage.getItem('keys') || '[]');
+    setKeycaps([...storedKeycaps, ...keycaps]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -56,31 +30,57 @@ function App() {
     socket.onmessage = (event) => setWindowApp(String(event.data).toLowerCase());
   }, []);
 
+  const openModalNewKeycap = () => setShowModalNewKeycap(true);
+  const closeModalNewKeycap = () => setShowModalNewKeycap(false);
+
+  const saveKeycap = (newKeycap: KeycapProps) => {
+    const newKeycaps: KeycapProps[] = [...keycaps, newKeycap];
+    setKeycaps(newKeycaps);
+    localStorage.setItem('keys', JSON.stringify(newKeycaps));
+    setShowModalNewKeycap(false);
+  };
+
+  const removeKeycap = (command: string) => {
+    const newKeycaps: KeycapProps[] = keycaps.filter(key => key.command !== command);
+    setKeycaps(newKeycaps);
+    localStorage.setItem('keys', JSON.stringify(newKeycaps));
+  }
+
+  const toFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else if (appRef?.current?.requestFullscreen) {
+      appRef.current.requestFullscreen();
+    } 
+  }
+
+  const deleteButtonScreen = () => setKeycaps([]);
+
   const addPreset = (preset: {
     title: string;
-    keys: KeyInterface[];
+    keys: KeycapProps[];
     label: string;
   }) => {
     const { title, keys: presetKeys } = preset;
     if (!presets.includes(title)) {
-      const newKeys: KeyInterface[] = [...keys, ...presetKeys];
-      setKeys(newKeys);
+      const newKeys: KeycapProps[] = [...keycaps, ...presetKeys];
+      setKeycaps(newKeys);
       setPresets(presets => [...presets, title]);
     } else {
-      setKeys(currentKeys => currentKeys.filter(key => !presetKeys.includes(key)));
+      setKeycaps(currentKeycaps => currentKeycaps.filter(keycap => !presetKeys.includes(keycap)));
       setPresets(presets => presets.filter(preset => preset !== title));
     }
   }
 
-  const getSelectedKeys = (keys: KeyInterface[]) => {
-    const keysWindowApp = keys.filter(key => windowApp.includes(key.appTitle?.toLowerCase() || ''));    
-    return keysWindowApp.length > 0 ? keysWindowApp : keys;
+  const getSelectedKeycaps = (keycaps: KeycapProps[]) => {
+    const keysWindowApp = keycaps.filter(keycap => windowApp.includes(keycap.appTitle?.toLowerCase() || ''));
+    return keysWindowApp.length > 0 ? keysWindowApp : keycaps;
   }
 
   return (
     <div className='boar' ref={appRef}>
-      {!showModalNewKey && <div className='btn-bar'>
-        <button className='btn-sm' onClick={openModalNewKey}> + </button>
+      {!showModalNewKeycap && <div className='btn-bar'>
+        <button className='btn-sm' onClick={openModalNewKeycap}> + </button>
         <button className='btn-sm' onClick={toFullscreen}> 📺 </button>
         {PRESETS.map(preset => (
           <button key={preset.title} className='btn-sm' onClick={() => addPreset(preset)}>
@@ -90,9 +90,9 @@ function App() {
         <button className='btn-sm' onClick={deleteButtonScreen}> 🧹 </button>
       </div>}
       <div className='btns'>
-        { getSelectedKeys(keys).map((key, index) => <Key key={`${index}-${key.label}`} {...key} remove={removeKey} />)}
+        { getSelectedKeycaps(keycaps).map((keycap, index) => <Keycap key={`${index}-${keycap.label}`} {...keycap} remove={removeKeycap} />)}
       </div>
-      {showModalNewKey && <ModalNewKey onClose={closeModalNewKey} onSave={saveKey} />}
+      {showModalNewKeycap && <ModalNewKeycap onClose={closeModalNewKeycap} onSave={saveKeycap} />}
     </div>
   );
 }

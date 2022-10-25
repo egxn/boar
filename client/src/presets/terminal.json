@@ -7,14 +7,14 @@
       "background": "#ffffff",
       "command": "ctrl+shift+t",
       "label": "🆕",
-      "kind": "key"
+      "kind": "keys"
     },
     {
       "appTitle": "terminal",
       "background": "#ffffff",
       "command": "ctrl+c",
       "label": "🛑",
-      "kind": "key"
+      "kind": "keys"
     }
   ]
 }

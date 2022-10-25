@@ -30,9 +30,10 @@ async fn handle_request(mut request: Request<Body>) -> Result<Response<Body>, In
     (&Method::GET, "/main.css") => response = utils::get_asset("main.css"),
     (&Method::GET, "/grunt")  => { 
       let params : HashMap<&str, &str> = utils::get_params(request.uri().query().unwrap());
-      let kind =  if params.contains_key("key") { "key"} 
-                  else if params.contains_key("type") { "type" }
-                  else { "" };
+      let kind =
+        if params.contains_key("keys") { "key"}
+        else if params.contains_key("type") { "type" }
+        else { "" };
       if kind != "" {
         let value = decode(params.get(kind).unwrap()).expect("UTF-8");
         utils::push_keys(&value, kind).await;

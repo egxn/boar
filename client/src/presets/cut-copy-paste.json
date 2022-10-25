@@ -7,21 +7,21 @@
       "background": "#ffffff",
       "command": "ctrl+c",
       "label": "🖇",
-      "kind": "key"
+      "kind": "keys"
     },
     {
       "appTitle": "",
       "background": "#ffffff",
       "command": "ctrl+x",
       "label": "✂",
-      "kind": "key"
+      "kind": "keys"
     },
     {
       "appTitle": "",
       "background": "#ffffff",
       "command": "ctrl+v",
       "label": "📌",
-      "kind": "key"
+      "kind": "keys"
     }
   ]
 }

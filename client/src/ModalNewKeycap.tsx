@@ -14,12 +14,11 @@ interface ModalNewKeycapProps {
 };
 
 function ModalNewKeycap({ onClose, onSave }: ModalNewKeycapProps) {
-  const [kind, setKind] = useState(Kind.Keys);
   const [newKeycap, setNewKeycap] = useState<KeycapProps>({
     appTitle: '',
     background: '#ffffff',
     command: '',
-    kind,
+    kind: Kind.Keys,
     label: '',
   });
 
@@ -30,10 +29,10 @@ function ModalNewKeycap({ onClose, onSave }: ModalNewKeycapProps) {
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setNewKeycap(k =>  ({ ...k, [event.target.id]: event.target.value }));
-  const toggleKind = (event: React.ChangeEvent<HTMLInputElement>) => 
-    setKind(event.target.value as Kind);
+  const toggleKind = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setNewKeycap(k => ({ ...k, kind: (event.target.value as Kind) }));
   const pushCommand = (command: string) => 
     setNewKeycap(k => ({ ...k, command: k.command ? k.command + '+' + command : command }));
 
@@ -65,7 +64,7 @@ function ModalNewKeycap({ onClose, onSave }: ModalNewKeycapProps) {
             name="kind" 
             type="radio"
             value={Kind.Keys} 
-            checked={kind === "keys"} 
+            checked={newKeycap.kind === "keys"}
           />
           <label htmlFor="keys"> Keys </label>
           <input 
@@ -73,13 +72,13 @@ function ModalNewKeycap({ onClose, onSave }: ModalNewKeycapProps) {
             onChange={toggleKind} 
             name="kind" 
             type="radio" 
-            value={Kind.Type} 
-            checked={kind === "type"}
+            value={Kind.Type}
+            checked={newKeycap.kind === "type"}
           />
           <label className="ml" htmlFor="type"> Text </label>
         </div>
 
-        {kind === Kind.Keys && (
+        {newKeycap.kind === Kind.Keys && (
           <div className="row keycap-commands">
             {keyCommands.map((keyCommand) =>
               <button 
@@ -95,7 +94,7 @@ function ModalNewKeycap({ onClose, onSave }: ModalNewKeycapProps) {
         <div className="row">
           <label htmlFor="command">Command</label>
           <input
-            disabled={kind === "keys"}
+            disabled={newKeycap.kind === "keys"}
             className="input-text"
             id="command"
             list="keys"

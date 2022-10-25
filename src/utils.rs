@@ -31,33 +31,33 @@ pub fn get_params(query: &str) -> HashMap<&str, &str> {
 }
 
 pub fn print_qr(qr: &QrCode) -> () {
-	let border: i32 = 4;
-	for y in -border .. qr.size() + border {
-		for x in -border .. qr.size() + border {
-			let c: char = if qr.get_module(x, y) { '█' } else { ' ' };
-			print!("{0}{0}", c);
-		}
-		println!();
-	}
-	println!();
+  let border: i32 = 4;
+  for y in -border .. qr.size() + border {
+    for x in -border .. qr.size() + border {
+      let c: char = if qr.get_module(x, y) { '█' } else { ' ' };
+      print!("{0}{0}", c);
+    }
+    println!();
+  }
+  println!();
 }
 
 fn type_content(commands: &str) -> () {
   let mut clipboard = Clipboard::new().unwrap();
-  let clipboard_content = clipboard.get_text().unwrap();
-	clipboard.set_text(commands.into()).unwrap();
-  send(&EventType::KeyPress(Key::ControlLeft));
-  send(&EventType::KeyPress(Key::KeyV));
-  send(&EventType::KeyRelease(Key::KeyV));
-  send(&EventType::KeyRelease(Key::ControlLeft));
-  clipboard.set_text(clipboard_content.into()).unwrap();
+  match clipboard.set_text(commands.to_string()) {
+    Ok(_) => {
+      send(&EventType::KeyPress(Key::ControlLeft));
+      send(&EventType::KeyPress(Key::KeyV));
+      send(&EventType::KeyRelease(Key::KeyV));
+      send(&EventType::KeyRelease(Key::ControlLeft));
+    },
+    Err(err) => println!("Error setting clipboard: {}", err)
+  }
 }
-
 
 fn key_commands(commands: &str) -> () {
   let commands: Vec<&str> = commands.split('+').collect();
   for command in commands.clone() {
-
     match string_to_key(command) {
       Some(key) => send(&EventType::KeyPress(key)),
       None => continue,
