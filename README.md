@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github/egxn/boar">
-    <img alt="babel" src="./assets/boar-icon.png" width="100" />
+    <img alt="babel" src="./assets/boar.png" width="600" />
   </a>
 </p>
 
@@ -20,11 +20,17 @@
 
 ## Features
 
-[ Keys combinations](https://user-images.githubusercontent.com/9216933/197866471-fc3592a1-c3b6-4204-aaa6-e6c71d88223f.webm)
+### Keys depending on the app 
 
-[Text input](https://user-images.githubusercontent.com/9216933/197866498-8f6d05a4-b4ef-4cfd-a285-372e7652492f.webm)
+![Keys depending on the app](./assets/demo_1.gif)
 
-[Keys depending on the app](https://user-images.githubusercontent.com/9216933/197866513-14176330-3dac-4a25-888f-f66d83b70157.webm)
+### Keys combinations
+
+![Keys combinations](./assets/demo_3.gif)
+
+### Text input
+
+![Text input](./assets/demo_2.gif)
 
 ## Dependencies
 
