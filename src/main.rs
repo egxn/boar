@@ -6,12 +6,12 @@ use local_ip_address::local_ip;
 use std::collections::HashMap;
 use std::convert::Infallible;
 use std::net::SocketAddr;
-use qrcodegen::QrCode;
-use qrcodegen::QrCodeEcc;
+use qrcodegen::{QrCode, QrCodeEcc};
 use urlencoding::decode;
 use tungstenite::Message;
 
 mod utils;
+mod tray;
 
 async fn handle_request(mut request: Request<Body>) -> Result<Response<Body>, Infallible> {
   if is_upgrade_request(&request) {
@@ -78,25 +78,27 @@ async fn serve_websocket(websocket: HyperWebsocket) -> Result<(), Infallible> {
   Ok(())
 }
 
-
 #[tokio::main]
 async fn main() {
   let ip = local_ip().unwrap();
   let port = 7878;
   let addr = SocketAddr::from((ip, port));
-  
+  let url = format!("http://{}:{}", &ip.to_string(), port);
   let make_svc = make_service_fn(|_conn| async {
     Ok::<_, Infallible>(service_fn(handle_request))
   });
-
   let server = Server::bind(&addr).serve(make_svc);
-  let url = format!("http://{}:{}", &ip.to_string(), port);
   let qr = QrCode::encode_text(&url, QrCodeEcc::Medium).unwrap();
 
-  println!("Boar 🐗 running on http://{}:{}", &ip.to_string(), port);
+  println!("Boar 🐗 running on {}", url);
+
   utils::print_qr(&qr);
+  tokio::spawn(async move {
+    tray::run(url);
+  });
 
   if let Err(e) = server.await {
     eprintln!("server error: {}", e);
   }
 }
+

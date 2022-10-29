@@ -31,7 +31,7 @@ pub fn get_params(query: &str) -> HashMap<&str, &str> {
 }
 
 pub fn print_qr(qr: &QrCode) -> () {
-  let border: i32 = 4;
+  let border: i32 = 0;
   for y in -border .. qr.size() + border {
     for x in -border .. qr.size() + border {
       let c: char = if qr.get_module(x, y) { '█' } else { ' ' };
