@@ -21,12 +21,16 @@ function App() {
   const [showModalNewKeycap, setShowModalNewKeycap] = useState(false);
 
   useEffect(() => {
+    const storedCode = window.sessionStorage.getItem('code');
+    if (storedCode) setCode(storedCode);
+
     const storedKeycaps = JSON.parse(localStorage.getItem('keycaps') || '[]');
     const userKeycapsGroup = {
       title: 'boar',
       label: '🐗',
       keycaps: storedKeycaps
     };
+
     setGroups([userKeycapsGroup, cutCopyPaste, terminal, emojisFaces, emojisNature, ubuntu]);
   }, []);
 
@@ -88,6 +92,11 @@ function App() {
       mapButtons(groups[0]?.keycaps || []);
   };
 
+  const saveCode = () => {
+    window.sessionStorage.setItem('code', codeInput);
+    setCode(codeInput);
+  }
+
   return (
     <div className='boar' ref={appRef}>
       {!code &&
@@ -97,7 +106,7 @@ function App() {
             onChange={(e) => setCodeInput(e.target.value)} 
             value={codeInput}
           />
-          <button className='btn-sm' onClick={() => setCode(codeInput)}>💾</button>
+          <button className='btn-sm' onClick={saveCode}>💾</button>
         </div>
       }
       {!showModalNewKeycap && code &&
