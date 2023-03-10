@@ -1,7 +1,14 @@
 {
   "title": "cut copy paste",
   "label": "📋",
-  "keys": [
+  "keycaps": [
+    {
+      "appTitle": "",
+      "background": "#ffffff",
+      "command": "ctrl+a",
+      "label": "🌊",
+      "kind": "keys"
+    },
     {
       "appTitle": "",
       "background": "#ffffff",

@@ -17,6 +17,7 @@
 - [x] 📡 Streaming
 - [x] 🎨 Apps Shortcuts 
 - [x] 🔔 Touch midi controller
+- [x] 🕹 PC Controller
 
 ## Features
 
@@ -58,13 +59,13 @@ Create a new file in  `/client/src/presets/`
 {
   "title": "",
   "label": "",
-  "keys": [
+  "keycaps": [
     {
-      "appTitle": "",
-      "background": "",
+      "appTitle": "", // Optional
+      "background": "", // Optional
       "command": "",
       "label": "",
-      "kind": "" // "keys" or "type"
+      "kind": "" // "keys" || "type" || "cli"
     }
   ]
 }

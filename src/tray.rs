@@ -34,18 +34,16 @@ fn exit_item() -> gtk::MenuItem {
   item
 }
 
-
-
-fn create_tray_icon(url: String) -> () {
+fn create_tray_icon(url: String, code: &str) -> () {
   let (dir, _) = get_icon_path();
   copy_assets();
+  let url_info = gtk::MenuItem::with_label(&format!("📲 {}", url));
+  let code_key = gtk::MenuItem::with_label(&format!("🔑 {}", code));
   let exit = exit_item();
-  let info = gtk::MenuItem::with_label(&format!("📲 Use on your mobile"));
-  let url_info = gtk::MenuItem::with_label(&format!("{}", url));
   let mut menu = gtk::Menu::new();
 
-  menu.append(&info);  
   menu.append(&url_info);
+  menu.append(&code_key);
   menu.append(&gtk::SeparatorMenuItem::new());
   menu.append(&exit);
   menu.show_all();
@@ -57,8 +55,8 @@ fn create_tray_icon(url: String) -> () {
   tray.set_menu(&mut menu);
 }
 
-pub fn run(url: String) -> () {
+pub fn run(url: String, code: &str) -> () {
   gtk::init().unwrap();
-  create_tray_icon(url);
+  create_tray_icon(url, code);
   gtk::main();
 }

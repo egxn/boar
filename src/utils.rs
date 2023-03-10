@@ -1,6 +1,8 @@
 use arboard::Clipboard;
 use hyper::{Body, Response, StatusCode};
 use qrcodegen::QrCode;
+use rand::{Rng, thread_rng};
+use rand::distributions::Alphanumeric;
 use rdev::{simulate, EventType, Key, SimulateError};
 use rust_embed::RustEmbed;
 use std::{collections::HashMap, process::Command, str, thread, time};
@@ -70,6 +72,19 @@ fn key_commands(commands: &str) -> () {
       None => continue,
     };
   }
+}
+
+fn cli_commands(commands: &str) -> () {
+  let commands: Vec<&str> = commands
+    .split(' ')
+    .collect();
+  let command = commands[0];
+  let args = &commands[1..];
+  let output = Command::new(command)
+    .args(args)
+    .output()
+    .expect("failed to execute process");
+  println!("stdout: {}", str::from_utf8(&output.stdout).unwrap());
 }
 
 fn string_to_key(string: &str) -> Option<Key> {
@@ -164,6 +179,8 @@ pub async fn push_keys(commands: &str, kind: &str) -> () {
     type_content(commands);
   } else if kind == "keys" {
     key_commands(commands);
+  } else if kind == "cli" {
+    cli_commands(commands);
   }
 }
 
@@ -194,6 +211,13 @@ fn send(event_type: &EventType) -> () {
   thread::sleep(delay);
 }
 
+pub fn get_code() -> String {
+  let mut rng = thread_rng();
+  let code = (0..5).map(|_| rng.sample(Alphanumeric) as char)
+    .collect::<String>();
+
+  code
+}
 
 #[test]
 fn test_get_home() {

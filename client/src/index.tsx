@@ -1,102 +1,136 @@
-import emojis from './presets/emojis.json';
+import emojisFaces from './presets/emojis-faces.json';
+import emojisNature from './presets/emojis-nature.json';
 import cutCopyPaste from './presets/cut-copy-paste.json';
 import terminal from './presets/terminal.json';
+import ubuntu from './presets/ubuntu.json';
 
-import Keycap, { KeycapProps } from './Keycap';
+import Keycap, { KeyCapProps, KeyCapGroup } from './Keycap';
 import ModalNewKeycap from './ModalNewKeycap';
 import { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-const PRESETS = [cutCopyPaste, terminal ,emojis];
-
 function App() {
   const appRef = useRef<HTMLDivElement>(null);
-  const [keycaps, setKeycaps] = useState<KeycapProps[]>([]);
+  const ws = useRef<WebSocket | null>(null);
+  const [code, setCode] = useState<string>('');
+  const [codeInput, setCodeInput] = useState<string>('');
+  const [groupTitle, setGroupTitle] = useState<string>('boar');
+  const [groups, setGroups] = useState<KeyCapGroup[]>([]);
+
   const [showModalNewKeycap, setShowModalNewKeycap] = useState(false);
-  const [presets, setPresets] = useState<string[]>([]);
-  const [windowApp, setWindowApp] = useState<string>('');
 
   useEffect(() => {
-    const storedKeycaps = JSON.parse(localStorage.getItem('keys') || '[]');
-    setKeycaps([...storedKeycaps, ...keycaps]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    const storedKeycaps = JSON.parse(localStorage.getItem('keycaps') || '[]');
+    const userKeycapsGroup = {
+      title: 'boar',
+      label: '🐗',
+      keycaps: storedKeycaps
+    };
+    setGroups([userKeycapsGroup, cutCopyPaste, terminal, emojisFaces, emojisNature, ubuntu]);
   }, []);
 
   useEffect(() => {
     const url = window.location.host;
-    let socket: WebSocket = new WebSocket(`ws://${url}/`);
-    socket.onopen = (e) => console.log("WS Connection established");
-    socket.onmessage = (event) => setWindowApp(String(event.data).toLowerCase());
+    ws.current = new WebSocket(`ws://${url}/`);
+    ws.current.onopen = (e) => console.log('WS Connection established');
+    ws.current.onclose = (e) => console.log('WS Connection closed');
+    return () => ws.current?.close();
   }, []);
+
+  useEffect(() => {
+    if (!ws.current) return;
+    ws.current.onmessage = (event) => {
+      const appName = String(event.data).toLowerCase().trim();
+      if (groups.some(({ title }) => appName.includes(title))) {
+        setGroupTitle(appName);
+      } else {
+        setGroupTitle('boar');
+      }
+    };
+  }, [groupTitle, groups]);
 
   const openModalNewKeycap = () => setShowModalNewKeycap(true);
   const closeModalNewKeycap = () => setShowModalNewKeycap(false);
 
-  const saveKeycap = (newKeycap: KeycapProps) => {
-    const newKeycaps: KeycapProps[] = [...keycaps, newKeycap];
-    setKeycaps(newKeycaps);
-    localStorage.setItem('keys', JSON.stringify(newKeycaps));
+  const saveKeycap = (newKeycap: KeyCapProps) => {
+    const [boarGroup, ...restGroups] = groups;
+    const newKeycaps: KeyCapProps[] = [...boarGroup.keycaps, newKeycap];
+    setGroups([{...boarGroup, keycaps: newKeycaps}, ...restGroups]);
+    localStorage.setItem('keycaps', JSON.stringify(newKeycaps));
     setShowModalNewKeycap(false);
   };
 
   const removeKeycap = (command: string) => {
-    const newKeycaps: KeycapProps[] = keycaps.filter(key => key.command !== command);
-    setKeycaps(newKeycaps);
-    localStorage.setItem('keys', JSON.stringify(newKeycaps));
-  }
+    const [boarGroup, ...restGroups] = groups;
+    const newKeycaps: KeyCapProps[] = boarGroup.keycaps.filter(keycap => keycap.command !== command);
+    setGroups([{...boarGroup, keycaps: newKeycaps}, ...restGroups]);
+    localStorage.setItem('keycaps', JSON.stringify(newKeycaps));
+  };
 
   const toFullscreen = () => {
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
+    if (document?.fullscreenElement) {
+      document?.exitFullscreen();
     } else if (appRef?.current?.requestFullscreen) {
       appRef.current.requestFullscreen();
-    } 
-  }
-
-  const deleteButtonScreen = () => setKeycaps([]);
-
-  const addPreset = (preset: {
-    title: string;
-    keys: KeycapProps[];
-    label: string;
-  }) => {
-    const { title, keys: presetKeys } = preset;
-    if (!presets.includes(title)) {
-      const newKeys: KeycapProps[] = [...keycaps, ...presetKeys];
-      setKeycaps(newKeys);
-      setPresets(presets => [...presets, title]);
-    } else {
-      setKeycaps(currentKeycaps => currentKeycaps.filter(keycap => !presetKeys.includes(keycap)));
-      setPresets(presets => presets.filter(preset => preset !== title));
     }
-  }
+  };
 
-  const getSelectedKeycaps = (keycaps: KeycapProps[]) => {
-    const keysWindowApp = keycaps.filter(keycap => windowApp.includes(keycap.appTitle?.toLowerCase() || ''));
-    return keysWindowApp.length > 0 ? keysWindowApp : keycaps;
-  }
+  const getKeycaps = () => {
+    const mapButtons = (keycaps: KeyCapProps[]) => keycaps
+      .map((keycap, i) => <Keycap code={code} key={`${i}-${keycap.label}`} {...keycap} remove={removeKeycap} />);
+    
+    const appKeyCaps = groups
+      .filter(group => group.title === groupTitle)
+
+    return appKeyCaps.length ? 
+      mapButtons(appKeyCaps[0]?.keycaps || []) :
+      mapButtons(groups[0]?.keycaps || []);
+  };
 
   return (
     <div className='boar' ref={appRef}>
-      {!showModalNewKeycap && <div className='btn-bar'>
-        <button className='btn-sm' onClick={openModalNewKeycap}> + </button>
-        <button className='btn-sm' onClick={toFullscreen}> 📺 </button>
-        {PRESETS.map(preset => (
-          <button key={preset.title} className='btn-sm' onClick={() => addPreset(preset)}>
-            {preset.label}
+      {!code &&
+        <div className='row'>
+          🔓
+          <input
+            onChange={(e) => setCodeInput(e.target.value)} 
+            value={codeInput}
+          />
+          <button className='btn-sm' onClick={() => setCode(codeInput)}>💾</button>
+        </div>
+      }
+      {!showModalNewKeycap && code &&
+        <div className='btn-bar'>
+          <button className='btn-sm'onClick={openModalNewKeycap}> + </button>
+          <button 
+            aria-label='fullscreen'
+            className='btn-sm'
+            onClick={toFullscreen}
+          > 
+            📺
           </button>
-        ))}
-        <button className='btn-sm' onClick={deleteButtonScreen}> 🧹 </button>
-      </div>}
-      <div className='btns'>
-        { getSelectedKeycaps(keycaps).map((keycap, index) => <Keycap key={`${index}-${keycap.label}`} {...keycap} remove={removeKeycap} />)}
-      </div>
+          {groups.map(({ label, title }) => (
+            <button
+              arial-label={title}
+              className={`btn-sm ${groupTitle === title ? 'btn-active' : ''}`}
+              key={title}
+              onClick={() => setGroupTitle(title)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      }
+      { code &&
+        <div className='btns'>
+          {getKeycaps()}
+        </div>
+      }
       {showModalNewKeycap && <ModalNewKeycap onClose={closeModalNewKeycap} onSave={saveKeycap} />}
     </div>
   );
 }
-
 
 const root = createRoot( document.getElementById('root') as Element); 
 root.render(<App />);

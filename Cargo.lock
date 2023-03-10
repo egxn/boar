@@ -104,7 +104,7 @@ dependencies = [
 
 [[package]]
 name = "boar"
-version = "0.6.1"
+version = "0.6.2"
 dependencies = [
  "arboard",
  "futures",
@@ -115,6 +115,7 @@ dependencies = [
  "libappindicator",
  "local-ip-address",
  "qrcodegen",
+ "rand",
  "rdev",
  "rust-embed",
  "tokio",

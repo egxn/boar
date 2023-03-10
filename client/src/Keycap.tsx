@@ -1,15 +1,22 @@
 import { useLayoutEffect, useState } from "react";
 import './styles.css';
 
-export interface KeycapProps {
+export interface KeyCapGroup {
+  title: string;
+  label: string;
+  keycaps: KeyCapProps[];
+}
+
+export interface KeyCapProps {
   appTitle?: string;
-  background: string;
+  background?: string;
   command: string;
   label: string;
   kind: string;
+  code?: string;
 }
 
-export interface KeycapProps {
+export interface KeyCapProps {
   remove?: (command: string) => void;
 }
 
@@ -17,7 +24,7 @@ function randomHexColor(): string {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 };
 
-function Keycap({ background, command, kind, label, remove }: KeycapProps) {
+function Keycap({ background, code, command, kind, label, remove }: KeyCapProps) {
   const [touchStartTime, setTouchStartTime] = useState(0);
   const [borderColor, setBorderColor] = useState(randomHexColor());
   const BORDER_OK = "#00ff00";
@@ -31,7 +38,7 @@ function Keycap({ background, command, kind, label, remove }: KeycapProps) {
 
   const pushKeycap = async (kind: string) => {
     const url = window.location.host;
-    const res = await fetch(`http://${url}/grunt?${kind}=${command}`);
+    const res = await fetch(`http://${url}/grunt?${kind}=${command}&code=${code}`);
     if (res.status === 200) {
       setBorderColor(BORDER_OK);
     } else {
@@ -53,7 +60,8 @@ function Keycap({ background, command, kind, label, remove }: KeycapProps) {
 
 
   return (
-    <button 
+    <button
+      aria-label={command}
       className="keycap"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
