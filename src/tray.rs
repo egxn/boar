@@ -26,6 +26,20 @@ fn copy_assets() -> () {
       .unwrap();
 }
 
+fn copy_to_clipboard(text: &str) -> () {
+  let clipboard = gtk::Clipboard::get(&gdk::SELECTION_CLIPBOARD);
+  clipboard.set_text(text);
+}
+
+fn copy_to_clipboard_item(text:  &str, value: &str) -> gtk::MenuItem {
+  let value_cb = value.to_owned();
+  let item = gtk::MenuItem::with_label(&format!("{} {}", text, value));
+  item.connect_activate(move |_| {
+    copy_to_clipboard(&value_cb);
+  });
+  item
+}
+
 fn exit_item() -> gtk::MenuItem {
   let item = gtk::MenuItem::with_label("🚪 Exit");
   item.connect_activate(|_| {
@@ -34,11 +48,12 @@ fn exit_item() -> gtk::MenuItem {
   item
 }
 
+
 fn create_tray_icon(url: String, code: &str) -> () {
   let (dir, _) = get_icon_path();
   copy_assets();
-  let url_info = gtk::MenuItem::with_label(&format!("📲 {}", url));
-  let code_key = gtk::MenuItem::with_label(&format!("🔑 {}", code));
+  let url_info = copy_to_clipboard_item("📲", &url);
+  let code_key = copy_to_clipboard_item("🔑", code);
   let exit = exit_item();
   let mut menu = gtk::Menu::new();
 
