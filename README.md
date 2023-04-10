@@ -22,9 +22,10 @@
 
 * Download the latest release
 
-> chmod +x ./boar.AppImage
-> ./boar.AppImage
-
+``` bash
+  chmod +x ./boar.AppImage
+  ./boar.AppImage
+```
 
 ## Features
 
