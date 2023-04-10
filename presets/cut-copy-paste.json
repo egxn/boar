@@ -1,0 +1,34 @@
+{
+  "title": "Cut Copy Paste",
+  "label": "📋",
+  "keycaps": [
+    {
+      "appTitle": "",
+      "background": "#ffffff",
+      "command": "ctrl+a",
+      "label": "🌊",
+      "kind": "keys"
+    },
+    {
+      "appTitle": "",
+      "background": "#ffffff",
+      "command": "ctrl+c",
+      "label": "🖇",
+      "kind": "keys"
+    },
+    {
+      "appTitle": "",
+      "background": "#ffffff",
+      "command": "ctrl+x",
+      "label": "✂",
+      "kind": "keys"
+    },
+    {
+      "appTitle": "",
+      "background": "#ffffff",
+      "command": "ctrl+v",
+      "label": "📌",
+      "kind": "keys"
+    }
+  ]
+}

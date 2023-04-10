@@ -7,31 +7,31 @@
 </p>
 
 <p align="center">
-  A customizable touchpad for linux 🐧 using your mobile device
+  A customizable touchbar || keyboard || controller || for linux 🐧 using your mobile device
 </p>
 
 
-## Some uses:
+## Use cases
 
-- [x] 🙂 Emojis keyboard
-- [x] 📡 Streaming
-- [x] 🎨 Apps Shortcuts 
-- [x] 🔔 Touch midi controller
-- [x] 🕹 PC Controller
+- [..][🙂][🤓][🧐][..] Emojis Keyboard
+- [..][🔈][🔊][🔇][..] 📡 Controller
+- [..][📋][✂️][📌][..] 🎨 Apps Shortcuts
+
+
+# 🚀 Quick start
+
+* Download the latest release
+
+> chmod +x ./boar.AppImage
+> ./boar.AppImage
+
 
 ## Features
 
-### Keys depending on the app 
-
-![Keys depending on the app](./assets/demo_1.gif)
-
-### Keys combinations
-
-![Keys combinations](./assets/demo_3.gif)
-
-### Text input
-
-![Text input](./assets/demo_2.gif)
+* Custom apps shortcuts
+* Custom commands
+* Custom emojis
+* Custom text input
 
 ## Dependencies
 

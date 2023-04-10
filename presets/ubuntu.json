@@ -1,0 +1,34 @@
+{
+  "title": "Ubuntu",
+  "label": "🍊",
+  "keycaps": [
+    {
+      "appTitle": "ubuntu",
+      "background": "#ffffff",
+      "command": "amixer -D pulse sset Master 5%-",
+      "label": "🔉",
+      "kind": "cli"
+    },
+    {
+      "appTitle": "ubuntu",
+      "background": "#ffffff",
+      "command": "amixer -D pulse sset Master toggle",
+      "label": "🔇",
+      "kind": "cli"
+    },
+    {
+      "appTitle": "ubuntu",
+      "background": "#ffffff",
+      "command": "amixer -D pulse sset Master 5%+",
+      "label": "🔊",
+      "kind": "cli"
+    },
+    {
+      "appTitle": "ubuntu",
+      "background": "#ffffff",
+      "command": "systemctl poweroff",
+      "label": "🔌",
+      "kind": "cli"
+    }
+  ]
+}

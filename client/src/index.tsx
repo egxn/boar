@@ -1,8 +1,4 @@
-import emojisFaces from './presets/emojis-faces.json';
-import emojisNature from './presets/emojis-nature.json';
-import cutCopyPaste from './presets/cut-copy-paste.json';
-import terminal from './presets/terminal.json';
-import ubuntu from './presets/ubuntu.json';
+import presets from './presets.json';
 
 import Keycap, { KeyCapProps, KeyCapGroup } from './Keycap';
 import ModalNewKeycap from './ModalNewKeycap';
@@ -31,7 +27,7 @@ function App() {
       keycaps: storedKeycaps
     };
 
-    setGroups([userKeycapsGroup, cutCopyPaste, terminal, emojisFaces, emojisNature, ubuntu]);
+    setGroups([userKeycapsGroup, ...presets]);
   }, []);
 
   useEffect(() => {

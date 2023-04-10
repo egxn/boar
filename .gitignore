@@ -8,6 +8,8 @@ client/node_modules
 # testing
 client/coverage
 
+client/src/presets.json
+
 # production
 client/build
 
@@ -21,3 +23,6 @@ client/.env.production.local
 client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*
+
+# build
+*.AppImage
