@@ -1,7 +1,7 @@
 [package]
 name = "boar"
 edition = "2021"
-version = "0.6.21"
+version = "0.6.22"
 repository = "https://github.com/egxn/boar"
 license = "MIT"
 
