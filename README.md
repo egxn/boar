@@ -11,14 +11,14 @@
 </p>
 
 
-## Use cases
+## 🎹 Use cases
 
 - [..][🙂][🤓][🧐][..] Emojis Keyboard
 - [..][🔈][🔊][🔇][..] 📡 Controller
 - [..][📋][✂️][📌][..] 🎨 Apps Shortcuts
 
 
-# 🚀 Quick start
+## 🚀 Quick start
 
 * Download the latest release
 
@@ -27,32 +27,32 @@
   ./boar.AppImage
 ```
 
-## Features
+## 🔩 Features
 
 * Custom apps shortcuts
 * Custom commands
 * Custom emojis
 * Custom text input
 
-## Dependencies
+## 🍱 Dependencies
 
 This app works in linux with X.Org and xdotool.
 
-## Development
+## 🍱 Development
 
-### Dependencies
+### 📚 Dependencies
 
 * Node, yarn
 * Rust, cargo
 
-### Setup
+### 👷 Setup
 
 ``` bash
   cargo build --release
   cargo run --release
 ```
 
-## How add a preset of shortcuts
+### How add a preset of shortcuts
 
 Create a new file in  `/client/src/presets/`
 

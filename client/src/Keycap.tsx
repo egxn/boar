@@ -65,7 +65,7 @@ function Keycap({ background, code, command, kind, label, remove }: KeyCapProps)
       className="keycap"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      onClick={() => pushKeycap(kind)}
+//      onClick={() => pushKeycap(kind)}
       style={{
         background: `${background}`,
         border: `4px solid ${randomHexColor()}`,
